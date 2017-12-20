@@ -18,6 +18,7 @@ auto_close = 15 #成功后多少秒自动关闭
 openCC = OpenCC('s2t')
 today = (datetime.now()).strftime("%Y-%m-%d") # 加 '+ timedelta(days=1)' 在now()后面测试明天的
 today_list = today.split("-")
+
 # ---------------------------------------------------------
 #获取星座数据
 def getConstellation(cons):
