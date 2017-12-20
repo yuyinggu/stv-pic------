@@ -9,15 +9,15 @@ from time import sleep
 from opencc import OpenCC
 # ---------------------------------------------------------
 #全局设置
+today = (datetime.now()).strftime("%Y-%m-%d") # 加 '+ timedelta(days=1)' 在now()后面测试明天的
+today_list = today.split("-")
 cons_path = "D:\\DayJobs\\STVPlayer\\星座、黃歷\\" #星座背景文件夹路径（不含文件名） 
-cons_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\VideoFLV\\segment_02\\" #星座保存文件夹路径(不含文件名)
+cons_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ today_list[0]+"\\"+ today_list[1] +"\\"+ today_list[2] +"\\segment_02\\" #星座保存文件夹路径(不含文件名)
 #video_path = "test.flv" #星座视频输出路径 + 文件名
 huangli_path = "D:\\DayJobs\\STVPlayer\\星座、黃歷\\黃曆_Background.jpg" #黄历背景图片路径
 huangli_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\星座、黃歷\\test.jpg" #黄历输出图片路径+图片名
 auto_close = 15 #成功后多少秒自动关闭
 openCC = OpenCC('s2t')
-today = (datetime.now()).strftime("%Y-%m-%d") # 加 '+ timedelta(days=1)' 在now()后面测试明天的
-today_list = today.split("-")
 
 # ---------------------------------------------------------
 #获取星座数据
