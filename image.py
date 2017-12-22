@@ -10,15 +10,17 @@ from opencc import OpenCC
 # ---------------------------------------------------------
 #全局设置
 today = (datetime.now()).strftime("%Y-%m-%d") # 加 '+ timedelta(days=1)' 在now()后面测试明天的
+tomorrow = (datetime.now()+ timedelta(days=1)).strftime("%Y-%m-%d")
 today_list = today.split("-")
-cons_path = "D:\\DayJobs\\STVPlayer\\星座、黃歷\\" #星座背景文件夹路径（不含文件名） 
-cons_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ today_list[0]+"\\"+ today_list[1] +"\\"+ today_list[2] +"\\segment_02\\" #星座保存文件夹路径(不含文件名)
+cons_path = ""#"D:\\DayJobs\\STVPlayer\\星座、黃歷\\" #星座背景文件夹路径（不含文件名）
+cons_save = ""#"\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ today_list[0]+"\\"+ today_list[1] +"\\"+ today_list[2] +"\\segment_02\\" #星座保存文件夹路径(不含文件名)
 #video_path = "test.flv" #星座视频输出路径 + 文件名
-huangli_path = "D:\\DayJobs\\STVPlayer\\星座、黃歷\\黃曆_Background.jpg" #黄历背景图片路径
-huangli_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\星座、黃歷\\test.jpg" #黄历输出图片路径+图片名
+huangli_path = "黃曆_Background-01.jpg"#"D:\\DayJobs\\STVPlayer\\星座、黃歷\\黃曆_Background-01.jpg" #黄历背景图片路径
+huangli_path2 = "黃曆_Background-02.jpg"#"D:\\DayJobs\\STVPlayer\\星座、黃歷\\黃曆_Background-02.jpg" #黄历背景图片路径
+huangli_save = ""#"\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\星座、黃歷\\test.jpg" #黄历输出图片路径+图片名
 auto_close = 15 #成功后多少秒自动关闭
 openCC = OpenCC('s2t')
-font_dir = "C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\"
+font_dir = ""#"C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\"
 # ---------------------------------------------------------
 #获取星座数据
 def getConstellation(cons):
@@ -47,7 +49,7 @@ def consImages():
         content = getConstellation(cons)
         temp = ""
         for j in range(len(content)):
-            if j % 11 == 0 and j != 0:
+            if j % 10 == 0 and j != 0:
                 temp += ' \n' + content[j] + " "
             else: temp += content[j] + " "
         print(temp)
@@ -55,7 +57,7 @@ def consImages():
         #星座图片路径
         img_path = cons_path + cons + ".jpg"
         try:
-            font = ImageFont.truetype(font_dir+"msyhbd.ttc",55,encoding='unic')
+            font = ImageFont.truetype(font_dir+"msyhbd.ttc",65,encoding='unic')
         except:
             input("\033[1;31;40m字体文件不存在\n")
             return
@@ -88,12 +90,12 @@ def consImages():
 
 # ---------------------------------------------------------
 #获取黄历数据 & 修改图片
-def huangli():
+def huangli(day,in_path,out_path,file_name):
     API_KEYS = "53dbd012b1d059f89396127e54539a70"
     reqUrl = "http://v.juhe.cn/laohuangli/d"
     params = {
         "key":API_KEYS,
-        "date": today
+        "date": day
     }
     params = urlencode(params)
     f = urlopen("%s?%s" % (reqUrl, params))
@@ -110,7 +112,7 @@ def huangli():
 
     # 黄历背景图片
     try:
-        im1 = Image.open(huangli_path)
+        im1 = Image.open(in_path)
     except OSError as e:
         input("\033[1;31;40m黄历图片不存在或路径不对: \033[0;40m" + e.strerror)
         return
@@ -138,69 +140,69 @@ def huangli():
     #---------------------------------------------------------
     # 农历 yinli
     # "甲午(马)年八月十八"
-    xPos = getMidPos(yinli, width, 30) #35pt 微软雅黑字体 约等于 30 pixel
-    font = ImageFont.truetype(font_dir+"msyhbd.ttc",35,encoding='unic')
-    draw.text((xPos,160),yinli ,color,font=font)
+    xPos = getMidPos(yinli, width, 35) #35pt 微软雅黑字体 约等于 30 pixel
+    font = ImageFont.truetype(font_dir+"msyhbd.ttc",40,encoding='unic')
+    draw.text((xPos,210),yinli ,color,font=font)
     #---------------------------------------------------------
     # 吉神 jishen
     # "官日 六仪 益後 月德合 除神 玉堂 鸣犬"
-    temp = [""] * 2
-    line = 0
-    for i,val in enumerate(jishen.split(" ")):
-        if i % 5 ==0 and i != 0:
-            line += 1
-            temp[line] = val + " "
-        else:
-            temp[line] += val + " "
-    if line == 1:
-        Y = [275,320]
-    else:
-        Y = [295]
-    for i,Yposition in enumerate(Y): # 第一行 第二行  Y轴
-        jishen = temp[i]
-        xPos = getMidPos(jishen, width, 34) #20pt 微软雅黑字体 约等于 23 pixel
-        font = ImageFont.truetype(font_dir+"msyhbd.ttc",30,encoding='unic')
-        draw.text((xPos,Yposition),jishen ,color,font=font)
+    # temp = [""] * 2
+    # line = 0
+    # for i,val in enumerate(jishen.split(" ")):
+    #     if i % 5 ==0 and i != 0:
+    #         line += 1
+    #         temp[line] = val + " "
+    #     else:
+    #         temp[line] += val + " "
+    # if line == 1:
+    #     Y = [275,320]
+    # else:
+    #     Y = [295]
+    # for i,Yposition in enumerate(Y): # 第一行 第二行  Y轴
+    #     jishen = temp[i]
+    #     xPos = getMidPos(jishen, width, 34) #20pt 微软雅黑字体 约等于 23 pixel
+    #     font = ImageFont.truetype(font_dir+"msyhbd.ttc",30,encoding='unic')
+    #     draw.text((xPos,Yposition),jishen ,color,font=font)
     #---------------------------------------------------------
     # 凶神 xiongshen
     # "月建 小时 土府 月刑 厌对 招摇 五离"
-    temp = [""] * 2
-    line = 0
-    for i,val in enumerate(xiongshen.split(" ")):
-        if i % 5 ==0 and i != 0:
-            line += 1
-            temp[line] = val + " "
-        else:
-            temp[line] += val + " "
-    if line ==1:
-        Y = [430,470]
-    else:
-        Y = [450]
-    for i,Yposition in enumerate(Y): # 第一行 第二行  Y轴
-        xiongshen = temp[i]
-        xPos = getMidPos(xiongshen, width, 34) #20pt 微软雅黑字体 约等于 23 pixel
-        font = ImageFont.truetype(font_dir+"msyhbd.ttc",30,encoding='unic')
-        draw.text((xPos,Yposition),xiongshen ,color,font=font)
+    # temp = [""] * 2
+    # line = 0
+    # for i,val in enumerate(xiongshen.split(" ")):
+    #     if i % 5 ==0 and i != 0:
+    #         line += 1
+    #         temp[line] = val + " "
+    #     else:
+    #         temp[line] += val + " "
+    # if line ==1:
+    #     Y = [430,470]
+    # else:
+    #     Y = [450]
+    # for i,Yposition in enumerate(Y): # 第一行 第二行  Y轴
+    #     xiongshen = temp[i]
+    #     xPos = getMidPos(xiongshen, width, 34) #20pt 微软雅黑字体 约等于 23 pixel
+    #     font = ImageFont.truetype(font_dir+"msyhbd.ttc",30,encoding='unic')
+    #     draw.text((xPos,Yposition),xiongshen ,color,font=font)
     #---------------------------------------------------------
     # 宜 yi
     # yi = "祭祀 出行 馀事勿取 扫舍"
     yiList = yi.split(" ")
     yi = ""
     line_words = 0 # Count How many words in one line if more than 6 characters new line
-    font = ImageFont.truetype(font_dir+"msyhbd.ttc",30,encoding='unic')
-    Ypos = 590
+    font = ImageFont.truetype(font_dir+"msyhbd.ttc",40,encoding='unic')
+    Ypos = 350
     for i,val in enumerate(yiList):
-        if (line_words+len(val) > 6) and i < 14:
-            xPos = getMidPos(yi, width/2, 34) #30pt 微软雅黑字体 约等于 34 pixel
+        if (line_words+len(val) > 10) and i < 8:
+            xPos = getMidPos(yi, width, 45) #30pt 微软雅黑字体 约等于 34 pixel
             draw.text((xPos,Ypos),yi,color,font=font)
-            Ypos += 35
+            Ypos += 45
             yi = yiList[i] + ' '
             line_words = len(val)
-        elif i < 15:
+        elif i < 9:
             line_words += len(yiList[i])
             yi += yiList[i] + ' '
 
-    xPos = getMidPos(yi, width/2, 34) # 30pt 微软雅黑字体 约等于 34 pixel
+    xPos = getMidPos(yi, width, 45) # 30pt 微软雅黑字体 约等于 34 pixel
     draw.text((xPos,Ypos),yi,color,font=font)
 
     #---------------------------------------------------------
@@ -209,24 +211,25 @@ def huangli():
     jiList = ji.split(" ")
     ji = ""
     line_words = 0 # Count How many words in one line if more than 6 characters new line
-    font = ImageFont.truetype(font_dir+"msyhbd.ttc",30,encoding='unic')
-    Ypos = 590
+    font = ImageFont.truetype(font_dir+"msyhbd.ttc",40,encoding='unic')
+    Ypos = 600
     for i,val in enumerate(jiList):
-        if (line_words+len(val) > 6) and i < 14:
-            xPos = getMidPos(ji, width/2, 34) #30pt 微软雅黑字体 约等于 34 pixel
-            draw.text((width/2+xPos+5,Ypos),ji,color,font=font)
-            Ypos += 35
+        if (line_words+len(val) > 10) and i < 8:
+            xPos = getMidPos(ji, width, 45) #30pt 微软雅黑字体 约等于 34 pixel
+            draw.text((xPos,Ypos),ji,color,font=font)
+            Ypos += 45
             ji = jiList[i] + ' '
             line_words = len(val)
-        elif i < 15:
+        elif i < 9:
             line_words += len(jiList[i])
             ji += jiList[i] + ' '
 
-    draw.text((width/2+xPos+5,Ypos),ji ,color,font=font)
+    xPos = getMidPos(ji, width, 45) #30pt 微软雅黑字体 约等于 34 pixel
+    draw.text((xPos,Ypos),ji ,color,font=font)
     #---------------------------------------------------------
     #保存图片
     try:
-        im1.save(huangli_save)
+        im1.save(out_path + file_name)
     except OSError as e:
         input("\n\033[1;31;40m 错误" + e.strerror + "\033[0;40m")
         return False
@@ -257,15 +260,15 @@ def test():
 
 def main():
     subprocess.call("",shell=True) #颜色
+    #if cons_path == "":
     cons_result = consImages() # 星座function
-    h_result = huangli()       # 黄历function
+    h_result = huangli(today,huangli_path, huangli_save,"test.jpg")    # 黄历function
+    h_result2 = huangli(tomorrow,huangli_path2, huangli_save,"test2.jpg")    # 黄历function
     countDown = 0
-    if cons_result and h_result:
-        print("\033[1;32;40m \n星座，黄历图片生成完成\n\033[0;40m")
-        while countDown < auto_close:
-            print("\033[1;31;40m"+str(auto_close-countDown)+"\033[0;40m秒后自动关闭", end="\r")
-            sleep(1)
-            countDown += 1
+    while countDown < auto_close:
+        print("\033[1;31;40m"+str(auto_close-countDown)+"\033[0;40m秒后自动关闭", end="\r")
+        sleep(1)
+        countDown += 1
     # test()
 
 if __name__ == '__main__':
