@@ -17,7 +17,7 @@ cons_save = ""#"\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\
 #video_path = "test.flv" #星座视频输出路径 + 文件名
 huangli_path = "黃曆_Background-01.jpg"#"D:\\DayJobs\\STVPlayer\\星座、黃歷\\黃曆_Background-01.jpg" #黄历背景图片路径
 huangli_path2 = "黃曆_Background-02.jpg"#"D:\\DayJobs\\STVPlayer\\星座、黃歷\\黃曆_Background-02.jpg" #黄历背景图片路径
-huangli_save = ""#"\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\星座、黃歷\\test.jpg" #黄历输出图片路径+图片名
+huangli_save = "test/"#"\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\星座、黃歷\\test.jpg" #黄历输出图片路径+图片名
 auto_close = 15 #成功后多少秒自动关闭
 openCC = OpenCC('s2t')
 font_dir = ""#"C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\"
@@ -244,6 +244,13 @@ def getMidPos(string, width, pixel_word):
     xPos = (width/2)-((wordsCount*pixel_word)/2)
     return xPos
 
+def checkPath(input_path):
+    if input_path == "":
+        return
+    else:
+        if not os.path.exists(input_path):
+            print("文件夹不存在,创建文件夹：\n")
+            os.makedirs(input_path)
 
 def test():
     # ----------------------------------------------------------测试星座图片修改
@@ -258,10 +265,12 @@ def test():
     print(datetime.now().strftime("%Y-%m-%d").split('-')[0])
 
 
+
 def main():
     subprocess.call("",shell=True) #颜色
-    #if cons_path == "":
+    checkPath(cons_path) #判断路径是否存在，如果不存在创建
     cons_result = consImages() # 星座function
+    checkPath(huangli_save)
     h_result = huangli(today,huangli_path, huangli_save,"test.jpg")    # 黄历function
     h_result2 = huangli(tomorrow,huangli_path2, huangli_save,"test2.jpg")    # 黄历function
     countDown = 0
