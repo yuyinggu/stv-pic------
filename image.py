@@ -18,7 +18,7 @@ huangli_path = "D:\\DayJobs\\STVPlayer\\星座、黃歷\\黃曆_Background.jpg" 
 huangli_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\星座、黃歷\\test.jpg" #黄历输出图片路径+图片名
 auto_close = 15 #成功后多少秒自动关闭
 openCC = OpenCC('s2t')
-
+font_dir = "C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\"
 # ---------------------------------------------------------
 #获取星座数据
 def getConstellation(cons):
@@ -55,7 +55,7 @@ def consImages():
         #星座图片路径
         img_path = cons_path + cons + ".jpg"
         try:
-            font = ImageFont.truetype("msyhbd.ttc",55,encoding='unic')
+            font = ImageFont.truetype(font_dir+"msyhbd.ttc",55,encoding='unic')
         except:
             input("\033[1;31;40m字体文件不存在\n")
             return
@@ -139,7 +139,7 @@ def huangli():
     # 农历 yinli
     # "甲午(马)年八月十八"
     xPos = getMidPos(yinli, width, 30) #35pt 微软雅黑字体 约等于 30 pixel
-    font = ImageFont.truetype("msyhbd.ttc",35,encoding='unic')
+    font = ImageFont.truetype(font_dir+"msyhbd.ttc",35,encoding='unic')
     draw.text((xPos,160),yinli ,color,font=font)
     #---------------------------------------------------------
     # 吉神 jishen
@@ -159,7 +159,7 @@ def huangli():
     for i,Yposition in enumerate(Y): # 第一行 第二行  Y轴
         jishen = temp[i]
         xPos = getMidPos(jishen, width, 34) #20pt 微软雅黑字体 约等于 23 pixel
-        font = ImageFont.truetype("msyhbd.ttc",30,encoding='unic')
+        font = ImageFont.truetype(font_dir+"msyhbd.ttc",30,encoding='unic')
         draw.text((xPos,Yposition),jishen ,color,font=font)
     #---------------------------------------------------------
     # 凶神 xiongshen
@@ -179,7 +179,7 @@ def huangli():
     for i,Yposition in enumerate(Y): # 第一行 第二行  Y轴
         xiongshen = temp[i]
         xPos = getMidPos(xiongshen, width, 34) #20pt 微软雅黑字体 约等于 23 pixel
-        font = ImageFont.truetype("msyhbd.ttc",30,encoding='unic')
+        font = ImageFont.truetype(font_dir+"msyhbd.ttc",30,encoding='unic')
         draw.text((xPos,Yposition),xiongshen ,color,font=font)
     #---------------------------------------------------------
     # 宜 yi
@@ -187,7 +187,7 @@ def huangli():
     yiList = yi.split(" ")
     yi = ""
     line_words = 0 # Count How many words in one line if more than 6 characters new line
-    font = ImageFont.truetype("msyhbd.ttc",30,encoding='unic')
+    font = ImageFont.truetype(font_dir+"msyhbd.ttc",30,encoding='unic')
     Ypos = 590
     for i,val in enumerate(yiList):
         if (line_words+len(val) > 6) and i < 14:
@@ -209,7 +209,7 @@ def huangli():
     jiList = ji.split(" ")
     ji = ""
     line_words = 0 # Count How many words in one line if more than 6 characters new line
-    font = ImageFont.truetype("msyhbd.ttc",30,encoding='unic')
+    font = ImageFont.truetype(font_dir+"msyhbd.ttc",30,encoding='unic')
     Ypos = 590
     for i,val in enumerate(jiList):
         if (line_words+len(val) > 6) and i < 14:
