@@ -1,7 +1,7 @@
 missing module named resource - imported by posix, C:\Users\helen.gu\Documents\GitHub\stv-pic------\image.py
 missing module named posix - imported by os, C:\Users\helen.gu\Documents\GitHub\stv-pic------\image.py
 missing module named _posixsubprocess - imported by subprocess, C:\Users\helen.gu\Documents\GitHub\stv-pic------\image.py
-missing module named 'org.python' - imported by pickle, C:\Users\helen.gu\Documents\GitHub\stv-pic------\image.py, xml.sax
+missing module named org - imported by pickle, C:\Users\helen.gu\Documents\GitHub\stv-pic------\image.py
 missing module named readline - imported by cmd, code, pdb, C:\Users\helen.gu\Documents\GitHub\stv-pic------\image.py
 excluded module named _frozen_importlib - imported by importlib, importlib.abc, C:\Users\helen.gu\Documents\GitHub\stv-pic------\image.py
 missing module named _frozen_importlib_external - imported by importlib._bootstrap, importlib, importlib.abc, C:\Users\helen.gu\Documents\GitHub\stv-pic------\image.py
@@ -13,7 +13,7 @@ missing module named termios - imported by tty, getpass, C:\Users\helen.gu\Docum
 missing module named grp - imported by shutil, tarfile, pathlib, C:\Users\helen.gu\Documents\GitHub\stv-pic------\image.py
 missing module named pwd - imported by posixpath, shutil, tarfile, http.server, webbrowser, pathlib, netrc, getpass, C:\Users\helen.gu\Documents\GitHub\stv-pic------\image.py
 missing module named _dummy_threading - imported by dummy_threading, C:\Users\helen.gu\Documents\GitHub\stv-pic------\image.py
-missing module named org - imported by copy, C:\Users\helen.gu\Documents\GitHub\stv-pic------\image.py
+missing module named 'org.python' - imported by copy, C:\Users\helen.gu\Documents\GitHub\stv-pic------\image.py, xml.sax
 missing module named _scproxy - imported by urllib.request
 missing module named PIL._imagingagg - imported by PIL, PIL.ImageDraw
 missing module named Tkinter - imported by PIL.ImageTk

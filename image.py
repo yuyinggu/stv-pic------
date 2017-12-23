@@ -20,7 +20,7 @@ huangli_path2 = "黃曆_Background-02.jpg"#"D:\\DayJobs\\STVPlayer\\星座、黃
 huangli_save = ""#"\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\星座、黃歷\\test.jpg" #黄历输出图片路径+图片名
 auto_close = 15 #成功后多少秒自动关闭
 openCC = OpenCC('s2t')
-font_dir = ""#"C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\"
+font_dir = "C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\"#""
 # ---------------------------------------------------------
 #获取星座数据
 def getConstellation(cons):
