@@ -13,14 +13,14 @@ today = (datetime.now()).strftime("%Y-%m-%d") # 加 '+ timedelta(days=1)' 在now
 tomorrow = (datetime.now()+ timedelta(days=1)).strftime("%Y-%m-%d")
 today_list = today.split("-")
 cons_path = ""#"D:\\DayJobs\\STVPlayer\\星座、黃歷\\" #星座背景文件夹路径（不含文件名）
-cons_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ today_list[0]+"\\"+ today_list[1] +"\\"+ today_list[2] +"\\segment_02\\" #星座保存文件夹路径(不含文件名)
+cons_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ today_list[0]+"\\"+ today_list[1] +"\\"+ today_list[2] +"\\"+"Constellation/" #星座保存文件夹路径(不含文件名)
 #video_path = "test.flv" #星座视频输出路径 + 文件名
 huangli_path = "黃曆_Background-01.jpg"#"D:\\DayJobs\\STVPlayer\\星座、黃歷\\黃曆_Background-01.jpg" #黄历背景图片路径
 huangli_path2 = "黃曆_Background-02.jpg"#"D:\\DayJobs\\STVPlayer\\星座、黃歷\\黃曆_Background-02.jpg" #黄历背景图片路径
-huangli_save = "test/"#"\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\星座、黃歷\\test.jpg" #黄历输出图片路径+图片名
+huangli_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ today_list[0]+"\\"+ today_list[1] +"\\"+ today_list[2] +"\\"+"SideAd/" #黄历输出图片路径+图片名
 auto_close = 15 #成功后多少秒自动关闭
 openCC = OpenCC('s2t')
-font_dir = ""#"C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\"
+font_dir = "C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\"
 # ---------------------------------------------------------
 #获取星座数据
 def getConstellation(cons):
@@ -42,6 +42,14 @@ def getConstellation(cons):
 
 #---------------------------------------------------------
 #修改十二星座的图片
+def checkconsPath(input_path):
+    if input_path == "":
+        return
+    else:
+        if not os.path.exists(input_path):
+            print("文件夹不存在,创建文件夹：\n")
+            os.makedirs(input_path)
+
 def consImages():
     cons_list = ["摩羯座","水瓶座","双鱼座","白羊座","金牛座","双子座","巨蟹座","狮子座","处女座","天秤座","天蝎座","射手座"]
     for i,cons in enumerate(cons_list):
@@ -78,7 +86,6 @@ def consImages():
             input(e.strerror)
             return False
         print("\n\033[1;32;40m%s图片生成成功\n\033[0;40m" % cons)
-
     return True
     # with open("星座.txt", "r") as f:
     #     result = f.readline()
@@ -227,7 +234,7 @@ def huangli(day,in_path,out_path,file_name):
     xPos = getMidPos(ji, width, 45) #30pt 微软雅黑字体 约等于 34 pixel
     draw.text((xPos,Ypos),ji ,color,font=font)
     #---------------------------------------------------------
-    #保存图片
+    #保存图片  
     try:
         im1.save(out_path + file_name)
     except OSError as e:
@@ -236,7 +243,6 @@ def huangli(day,in_path,out_path,file_name):
     else:
         print("\n\033[1;32;40m黄历图片生成成功\n\033[0;40m")
         return True
-
 def getMidPos(string, width, pixel_word):
     wordsCount = 0
     for val in string.split(" "):
@@ -269,10 +275,11 @@ def test():
 def main():
     subprocess.call("",shell=True) #颜色
     checkPath(cons_path) #判断路径是否存在，如果不存在创建
+    checkconsPath(cons_save)
     cons_result = consImages() # 星座function
     checkPath(huangli_save)
-    h_result = huangli(today,huangli_path, huangli_save,"test.jpg")    # 黄历function
-    h_result2 = huangli(tomorrow,huangli_path2, huangli_save,"test2.jpg")    # 黄历function
+    h_result = huangli(today,huangli_path, huangli_save,"2301.jpg")    # 黄历function
+    h_result2 = huangli(tomorrow,huangli_path2, huangli_save,"2302.jpg")    # 黄历function
     countDown = 0
     while countDown < auto_close:
         print("\033[1;31;40m"+str(auto_close-countDown)+"\033[0;40m秒后自动关闭", end="\r")
