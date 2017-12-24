@@ -234,7 +234,7 @@ def huangli(day,in_path,out_path,file_name):
     xPos = getMidPos(ji, width, 45) #30pt 微软雅黑字体 约等于 34 pixel
     draw.text((xPos,Ypos),ji ,color,font=font)
     #---------------------------------------------------------
-    #保存图片  
+    #保存图片
     try:
         im1.save(out_path + file_name)
     except OSError as e:
@@ -278,8 +278,8 @@ def main():
     checkconsPath(cons_save)
     cons_result = consImages() # 星座function
     checkPath(huangli_save)
-    h_result = huangli(today,huangli_path, huangli_save,"2301.jpg")    # 黄历function
-    h_result2 = huangli(tomorrow,huangli_path2, huangli_save,"2302.jpg")    # 黄历function
+    h_result = huangli(today,huangli_path, huangli_save,today_list[2]+"01.jpg")    # 黄历function
+    h_result2 = huangli(tomorrow,huangli_path2, huangli_save,today_list[2]+"02.jpg")    # 黄历function
     countDown = 0
     while countDown < auto_close:
         print("\033[1;31;40m"+str(auto_close-countDown)+"\033[0;40m秒后自动关闭", end="\r")
