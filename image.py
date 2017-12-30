@@ -12,16 +12,16 @@ from opencc import OpenCC
 today = (datetime.now()).strftime("%Y-%m-%d") # 加 '+ timedelta(days=1)' 在now()后面测试明天的
 tomorrow = (datetime.now()+ timedelta(days=1)).strftime("%Y-%m-%d")
 today_list = today.split("-")
-cons_path = "C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\" #星座背景文件夹路径（不含文件名）
-cons_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ today_list[0]+"\\"+ today_list[1] +"\\"+ today_list[2] +"\\"+"Constellation/" #星座保存文件夹路径(不含文件名)
+cons_path = ""#"C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\" #星座背景文件夹路径（不含文件名）
+cons_save = ""#"\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ today_list[0]+"\\"+ today_list[1] +"\\"+ today_list[2] +"\\"+"Constellation/" #星座保存文件夹路径(不含文件名)
 #video_path = "test.flv" #星座视频输出路径 + 文件名
 
-huangli_path = "C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\黃曆_Background-01.jpg"#"D:\\DayJobs\\STVPlayer\\星座、黃歷\\黃曆_Background-01.jpg" #黄历背景图片路径
-huangli_path2 = "C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\黃曆_Background-02.jpg"#"D:\\DayJobs\\STVPlayer\\星座、黃歷\\黃曆_Background-02.jpg" #黄历背景图片路径
-huangli_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ today_list[0]+"\\"+ today_list[1] +"\\"+ today_list[2] +"\\"+"SideAd/" #黄历输出图片路径+图片名
+huangli_path = "黃曆_Background-01.jpg"#"C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\黃曆_Background-01.jpg"#"D:\\DayJobs\\STVPlayer\\星座、黃歷\\黃曆_Background-01.jpg" #黄历背景图片路径
+huangli_path2 = "黃曆_Background-02.jpg"#"C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\黃曆_Background-02.jpg"#"D:\\DayJobs\\STVPlayer\\星座、黃歷\\黃曆_Background-02.jpg" #黄历背景图片路径
+huangli_save = ""#"\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ today_list[0]+"\\"+ today_list[1] +"\\"+ today_list[2] +"\\"+"SideAd/" #黄历输出图片路径+图片名
 auto_close = 15 #成功后多少秒自动关闭
 openCC = OpenCC('s2t')
-font_dir ="C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\"
+font_dir =""#"C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\"
 
 # ---------------------------------------------------------
 #获取星座数据
@@ -59,7 +59,8 @@ def consImages():
         content = getConstellation(cons)
         temp = ""
         for j in range(len(content)):
-            if j % 10 == 0 and j != 0:
+            #星座图片每多少个字换行————————————————————————————————
+            if j % 9 == 0 and j != 0:
                 temp += ' \n' + content[j] + " "
             else: temp += content[j] + " "
         print(temp)
@@ -77,7 +78,7 @@ def consImages():
             input("\n\033[1;31;40m星座图片不存在或路径不对: " + e.strerror + "\033[0;40m")
             return
         draw = ImageDraw.Draw(im1)
-        draw.text((550,300),temp ,(255,255,255),font=font)
+        draw.text((550,250),temp ,(255,255,255),font=font)
         # draw.text((1200,300),result['summary'],(255,255,255),font=font)
         try:
             if i < 9:
