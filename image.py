@@ -10,9 +10,9 @@ from opencc import OpenCC
 # ---------------------------------------------------------
 #全局设置
 today = (datetime.now()).strftime("%Y-%m-%d") # 加 '+ timedelta(days=1)' 在now()后面测试明天的
-tomorrow = (datetime.now()+ timedelta(days=1)).strftime("%Y-%m-%d")
+tomorrow = (datetime.now()- timedelta(days=1)).strftime("%Y-%m-%d")
 today_list = today.split("-")
-cons_path = ""#"D:\\DayJobs\\STVPlayer\\星座、黃歷\\" #星座背景文件夹路径（不含文件名）
+cons_path = "D:\\DayJobs\\STVPlayer\\星座、黃歷\\" #星座背景文件夹路径（不含文件名）
 cons_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ today_list[0]+"\\"+ today_list[1] +"\\"+ today_list[2] +"\\"+"Constellation/" #星座保存文件夹路径(不含文件名)
 #video_path = "test.flv" #星座视频输出路径 + 文件名
 huangli_path = "黃曆_Background-01.jpg"#"D:\\DayJobs\\STVPlayer\\星座、黃歷\\黃曆_Background-01.jpg" #黄历背景图片路径
@@ -199,13 +199,13 @@ def huangli(day,in_path,out_path,file_name):
     font = ImageFont.truetype(font_dir+"msyhbd.ttc",40,encoding='unic')
     Ypos = 350
     for i,val in enumerate(yiList):
-        if (line_words+len(val) > 10) and i < 8:
+        if (line_words+len(val) > 10) and i < 12:
             xPos = getMidPos(yi, width, 45) #30pt 微软雅黑字体 约等于 34 pixel
             draw.text((xPos,Ypos),yi,color,font=font)
-            Ypos += 45
+            Ypos += 50
             yi = yiList[i] + ' '
             line_words = len(val)
-        elif i < 9:
+        elif i < 13:
             line_words += len(yiList[i])
             yi += yiList[i] + ' '
 
@@ -221,13 +221,13 @@ def huangli(day,in_path,out_path,file_name):
     font = ImageFont.truetype(font_dir+"msyhbd.ttc",40,encoding='unic')
     Ypos = 600
     for i,val in enumerate(jiList):
-        if (line_words+len(val) > 10) and i < 8:
+        if (line_words+len(val) > 10) and i < 12:
             xPos = getMidPos(ji, width, 45) #30pt 微软雅黑字体 约等于 34 pixel
             draw.text((xPos,Ypos),ji,color,font=font)
-            Ypos += 45
+            Ypos += 50
             ji = jiList[i] + ' '
             line_words = len(val)
-        elif i < 9:
+        elif i < 13:
             line_words += len(jiList[i])
             ji += jiList[i] + ' '
 
@@ -276,7 +276,7 @@ def main():
     subprocess.call("",shell=True) #颜色
     checkPath(cons_path) #判断路径是否存在，如果不存在创建
     checkconsPath(cons_save)
-    cons_result = consImages() # 星座function
+    # cons_result = consImages() # 星座function
     checkPath(huangli_save)
     h_result = huangli(today,huangli_path, huangli_save,today_list[2]+"01.jpg")    # 黄历function
     h_result2 = huangli(tomorrow,huangli_path2, huangli_save,today_list[2]+"02.jpg")    # 黄历function
