@@ -17,10 +17,10 @@ cons_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Sou
 #video_path = "test.flv" #星座视频输出路径 + 文件名
 huangli_path = "C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\黃曆_Background-01.jpg"#"D:\\DayJobs\\STVPlayer\\星座、黃歷\\黃曆_Background-01.jpg" #黄历背景图片路径
 huangli_path2 = "C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\黃曆_Background-02.jpg"#"D:\\DayJobs\\STVPlayer\\星座、黃歷\\黃曆_Background-02.jpg" #黄历背景图片路径
-huangli_save = ""#"\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ today_list[0]+"\\"+ today_list[1] +"\\"+ today_list[2] +"\\"+"SideAd/" #黄历输出图片路径+图片名
+huangli_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ today_list[0]+"\\"+ today_list[1] +"\\"+ today_list[2] +"\\"+"SideAd/" #黄历输出图片路径+图片名
 auto_close = 15 #成功后多少秒自动关闭
 openCC = OpenCC('s2t')
-font_dir =""#"C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\"
+font_dir ="C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\"
 
 # ---------------------------------------------------------
 #获取星座数据
@@ -80,9 +80,9 @@ def consImages():
         # draw.text((1200,300),result['summary'],(255,255,255),font=font)
         try:
             if i < 9:
-                im1.save(cons_save + today_list[2] +"0"+ str(i+1) +".jpg")
+                im1.save(cons_save + today_list[2] +"0"+ str(i+1) +".jpg", quality=100)
             else:
-                im1.save(cons_save + today_list[2] + str(i+1) +".jpg")
+                im1.save(cons_save + today_list[2] + str(i+1) +".jpg", quality=100)
         except OSError as e:
             input(e.strerror)
             return False
@@ -277,7 +277,7 @@ def main():
     subprocess.call("",shell=True) #颜色
     checkPath(cons_path) #判断路径是否存在，如果不存在创建
     checkconsPath(cons_save)
-    # cons_result = consImages() # 星座function
+    cons_result = consImages() # 星座function
     checkPath(huangli_save)
     h_result = huangli(today,huangli_path, huangli_save,today_list[2]+"01.jpg")    # 黄历function
     h_result2 = huangli(tomorrow,huangli_path2, huangli_save,today_list[2]+"02.jpg")    # 黄历function
