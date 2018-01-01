@@ -10,19 +10,17 @@ from opencc import OpenCC
 # ---------------------------------------------------------
 #全局设置
 today = (datetime.now()).strftime("%Y-%m-%d") # 加 '+ timedelta(days=1)' 在now()后面测试明天的
-tomorrow = (datetime.now()+ timedelta(days=1)).strftime("%Y-%m-%d")
+tomorrow = (datetime.now()- timedelta(days=1)).strftime("%Y-%m-%d")
 today_list = today.split("-")
-cons_path = "C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\" #星座背景文件夹路径（不含文件名）
+cons_path = "D:\\DayJobs\\STVPlayer\\星座、黃歷\\" #星座背景文件夹路径（不含文件名）
 cons_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ today_list[0]+"\\"+ today_list[1] +"\\"+ today_list[2] +"\\"+"Constellation/" #星座保存文件夹路径(不含文件名)
 #video_path = "test.flv" #星座视频输出路径 + 文件名
-
-huangli_path = "C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\黃曆_Background-01.jpg"#"D:\\DayJobs\\STVPlayer\\星座、黃歷\\黃曆_Background-01.jpg" #黄历背景图片路径
-huangli_path2 = "C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\黃曆_Background-02.jpg"#"D:\\DayJobs\\STVPlayer\\星座、黃歷\\黃曆_Background-02.jpg" #黄历背景图片路径
+huangli_path = "D:\\DayJobs\\STVPlayer\\星座、黃歷\\黃曆_Background-01.jpg" #黄历背景图片路径
+huangli_path2 = "D:\\DayJobs\\STVPlayer\\星座、黃歷\\黃曆_Background-02.jpg" #黄历背景图片路径
 huangli_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ today_list[0]+"\\"+ today_list[1] +"\\"+ today_list[2] +"\\"+"SideAd/" #黄历输出图片路径+图片名
 auto_close = 15 #成功后多少秒自动关闭
 openCC = OpenCC('s2t')
-font_dir ="C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\"
-
+font_dir = "C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\"
 # ---------------------------------------------------------
 #获取星座数据
 def getConstellation(cons):
@@ -42,6 +40,27 @@ def getConstellation(cons):
     #     f.write(json.dumps(res))
     return(openCC.convert(res["summary"]))
 
+def getConstellation2(cons):
+    appid = "53341"
+    secret = "d0e921caef0645f4bff676dba1a05a34"
+    url = "http://route.showapi.com/872-1"
+    params = {
+        "showapi_appid": appid,
+        "showapi_sign": secret,
+        "star": cons,
+        "needTomorrow": 0,
+        "needWeek": 0,
+        "needMonth": 0,
+        "needYear": 0
+        }
+
+    params = urlencode(params)
+    # print(params)
+    f = urlopen("%s?%s" % (url, params))
+    res = json.loads(f.read().decode())
+    # with open("星座.txt", "w") as f:
+    #     f.write(json.dumps(res))
+    return(openCC.convert(res["showapi_res_body"]["day"]["day_notice"]))
 #---------------------------------------------------------
 #修改十二星座的图片
 def checkconsPath(input_path):
@@ -54,19 +73,20 @@ def checkconsPath(input_path):
 
 def consImages():
     cons_list = ["摩羯座","水瓶座","双鱼座","白羊座","金牛座","双子座","巨蟹座","狮子座","处女座","天秤座","天蝎座","射手座"]
-    for i,cons in enumerate(cons_list):
+    cons_list2 = ["mojie","shuiping","shuangyu","baiyang","jinniu","shuangzi","juxie","shizi","chunv","tiancheng","tianxie","sheshou"]
+    for i,cons in enumerate(cons_list2):
         print(i+1,cons)
-        content = getConstellation(cons)
+        content = getConstellation2(cons)
         temp = ""
         for j in range(len(content)):
-            #星座图片每多少个字换行————————————————————————————————
             if j % 9 == 0 and j != 0:
                 temp += ' \n' + content[j] + " "
             else: temp += content[j] + " "
         print(temp)
 
         #星座图片路径
-        img_path = cons_path + cons + ".jpg"
+        # img_path = cons_path + cons + ".jpg"
+        img_path = cons_path + cons_list[i] + ".jpg"
         try:
             font = ImageFont.truetype(font_dir+"msyhbd.ttc",65,encoding='unic')
         except:
@@ -78,13 +98,13 @@ def consImages():
             input("\n\033[1;31;40m星座图片不存在或路径不对: " + e.strerror + "\033[0;40m")
             return
         draw = ImageDraw.Draw(im1)
-        draw.text((550,250),temp ,(255,255,255),font=font)
+        draw.text((550,300),temp ,(255,255,255),font=font)
         # draw.text((1200,300),result['summary'],(255,255,255),font=font)
         try:
             if i < 9:
-                im1.save(cons_save + today_list[2] +"0"+ str(i+1) +".jpg", quality=100)
+                im1.save(cons_save + today_list[2] +"0"+ str(i+1) +".jpg")
             else:
-                im1.save(cons_save + today_list[2] + str(i+1) +".jpg", quality=100)
+                im1.save(cons_save + today_list[2] + str(i+1) +".jpg")
         except OSError as e:
             input(e.strerror)
             return False
@@ -202,13 +222,13 @@ def huangli(day,in_path,out_path,file_name):
     font = ImageFont.truetype(font_dir+"msyhbd.ttc",40,encoding='unic')
     Ypos = 350
     for i,val in enumerate(yiList):
-        if (line_words+len(val) > 10) and i < 12:
+        if (line_words+len(val) > 10) and i < 8:
             xPos = getMidPos(yi, width, 45) #30pt 微软雅黑字体 约等于 34 pixel
             draw.text((xPos,Ypos),yi,color,font=font)
-            Ypos += 50
+            Ypos += 45
             yi = yiList[i] + ' '
             line_words = len(val)
-        elif i < 13:
+        elif i < 9:
             line_words += len(yiList[i])
             yi += yiList[i] + ' '
 
@@ -224,13 +244,13 @@ def huangli(day,in_path,out_path,file_name):
     font = ImageFont.truetype(font_dir+"msyhbd.ttc",40,encoding='unic')
     Ypos = 600
     for i,val in enumerate(jiList):
-        if (line_words+len(val) > 10) and i < 12:
+        if (line_words+len(val) > 10) and i < 8:
             xPos = getMidPos(ji, width, 45) #30pt 微软雅黑字体 约等于 34 pixel
             draw.text((xPos,Ypos),ji,color,font=font)
-            Ypos += 50
+            Ypos += 45
             ji = jiList[i] + ' '
             line_words = len(val)
-        elif i < 13:
+        elif i < 9:
             line_words += len(jiList[i])
             ji += jiList[i] + ' '
 
