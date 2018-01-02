@@ -87,9 +87,9 @@ def consImages():
         content = getConstellation(cons)
         temp = ""
         for j in range(len(content)):
-            if j % 9 == 0 and j != 0:
-                temp += ' \n' + content[j] + " "
-            else: temp += content[j] + " "
+            if j % 13 == 0 and j != 0:
+                temp += ' \n' + content[j]# + " "
+            else: temp += content[j]# + " "
         print(temp)
 
         #星座图片路径
@@ -106,7 +106,7 @@ def consImages():
             input("\n\033[1;31;40m星座图片不存在或路径不对: " + e.strerror + "\033[0;40m")
             return
         draw = ImageDraw.Draw(im1)
-        draw.text((550,200),temp ,(255,255,255),font=font)
+        draw.text((450,230),temp ,(255,255,255),font=font)
         # draw.text((1200,300),result['summary'],(255,255,255),font=font)
         try:
             if i < 9:
