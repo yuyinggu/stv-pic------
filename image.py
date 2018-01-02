@@ -23,6 +23,7 @@ openCC = OpenCC('s2t')
 font_dir = "C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\"
 # ---------------------------------------------------------
 #获取星座数据
+#聚合
 def getConstellation(cons):
     API_KEYS = "e162997788b7b704cbd48e9b9505da45"
     url = "http://web.juhe.cn:8080/constellation/getAll"
@@ -38,8 +39,12 @@ def getConstellation(cons):
     res = json.loads(f.read().decode())
     # with open("星座.txt", "w") as f:
     #     f.write(json.dumps(res))
-    return(openCC.convert(res["summary"]))
+    try:
+        return(openCC.convert(res["summary"]))
+    except:
+        return()
 
+#showapi
 def getConstellation2(cons):
     appid = "53341"
     secret = "d0e921caef0645f4bff676dba1a05a34"
@@ -60,7 +65,10 @@ def getConstellation2(cons):
     res = json.loads(f.read().decode())
     # with open("星座.txt", "w") as f:
     #     f.write(json.dumps(res))
-    return(openCC.convert(res["showapi_res_body"]["day"]["day_notice"]))
+    try:
+        return(openCC.convert(res["showapi_res_body"]["day"]["day_notice"]))
+    except:
+        return()
 #---------------------------------------------------------
 #修改十二星座的图片
 def checkconsPath(input_path):
@@ -74,9 +82,9 @@ def checkconsPath(input_path):
 def consImages():
     cons_list = ["摩羯座","水瓶座","双鱼座","白羊座","金牛座","双子座","巨蟹座","狮子座","处女座","天秤座","天蝎座","射手座"]
     cons_list2 = ["mojie","shuiping","shuangyu","baiyang","jinniu","shuangzi","juxie","shizi","chunv","tiancheng","tianxie","sheshou"]
-    for i,cons in enumerate(cons_list2):
+    for i,cons in enumerate(cons_list):
         print(i+1,cons)
-        content = getConstellation2(cons)
+        content = getConstellation(cons)
         temp = ""
         for j in range(len(content)):
             if j % 9 == 0 and j != 0:
@@ -98,13 +106,13 @@ def consImages():
             input("\n\033[1;31;40m星座图片不存在或路径不对: " + e.strerror + "\033[0;40m")
             return
         draw = ImageDraw.Draw(im1)
-        draw.text((550,300),temp ,(255,255,255),font=font)
+        draw.text((550,200),temp ,(255,255,255),font=font)
         # draw.text((1200,300),result['summary'],(255,255,255),font=font)
         try:
             if i < 9:
-                im1.save(cons_save + today_list[2] +"0"+ str(i+1) +".jpg")
+                im1.save(cons_save + today_list[2] +"0"+ str(i+1) +".jpg",quality=100)
             else:
-                im1.save(cons_save + today_list[2] + str(i+1) +".jpg")
+                im1.save(cons_save + today_list[2] + str(i+1) +".jpg",quality=100)
         except OSError as e:
             input(e.strerror)
             return False
@@ -259,13 +267,14 @@ def huangli(day,in_path,out_path,file_name):
     #---------------------------------------------------------
     #保存图片
     try:
-        im1.save(out_path + file_name)
+        im1.save(out_path + file_name,quality=100)
     except OSError as e:
         input("\n\033[1;31;40m 错误" + e.strerror + "\033[0;40m")
         return False
     else:
         print("\n\033[1;32;40m黄历图片生成成功\n\033[0;40m")
         return True
+
 def getMidPos(string, width, pixel_word):
     wordsCount = 0
     for val in string.split(" "):
