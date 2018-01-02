@@ -10,14 +10,18 @@ from opencc import OpenCC
 # ---------------------------------------------------------
 #全局设置
 today = (datetime.now()).strftime("%Y-%m-%d") # 加 '+ timedelta(days=1)' 在now()后面测试明天的
-tomorrow = (datetime.now()- timedelta(days=1)).strftime("%Y-%m-%d")
+tomorrow = (datetime.now()+ timedelta(days=1)).strftime("%Y-%m-%d")
 today_list = today.split("-")
+tomorrow_list = tomorrow.split("-")
+tomorrow_after = (datetime.now()+ timedelta(days=2)).strftime("%Y-%m-%d")
+tomorrow_after_list = tomorrow_after.split("-")
 cons_path = "C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\" #星座背景文件夹路径（不含文件名）
-cons_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ today_list[0]+"\\"+ today_list[1] +"\\"+ today_list[2] +"\\"+"Constellation/" #星座保存文件夹路径(不含文件名)
+cons_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ tomorrow_list[0]+"\\"+ tomorrow_list[1] +"\\"+ tomorrow_list[2] +"\\"+"Constellation/" #星座保存文件夹路径(不含文件名)
 #video_path = "test.flv" #星座视频输出路径 + 文件名
 huangli_path = "C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\黃曆_Background-01.jpg" #黄历背景图片路径
 huangli_path2 = "C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\黃曆_Background-02.jpg" #黄历背景图片路径
-huangli_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ today_list[0]+"\\"+ today_list[1] +"\\"+ today_list[2] +"\\"+"SideAd/" #黄历输出图片路径+图片名
+huangli_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ tomorrow_list[0]+"\\"+ tomorrow_list[1] +"\\"+ tomorrow_list[2] +"\\"+"SideAd/" #黄历输出图片路径+图片名
+huangli_save2 = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ tomorrow_after_list[0]+"\\"+ tomorrow_after_list[1] +"\\"+ tomorrow_after_list[2] +"\\"+"SideAd/" #黄历输出图片路径+图片名
 auto_close = 15 #成功后多少秒自动关闭
 openCC = OpenCC('s2t')
 font_dir = "C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\"
@@ -30,7 +34,7 @@ def getConstellation(cons):
     params = {
         "key": API_KEYS,
         "consName": cons,
-        "type": "today"
+        "type": "tomorrow"
         }
 
     params = urlencode(params)
@@ -87,9 +91,9 @@ def consImages():
         content = getConstellation(cons)
         temp = ""
         for j in range(len(content)):
-            if j % 13 == 0 and j != 0:
-                temp += ' \n' + content[j]# + " "
-            else: temp += content[j]# + " "
+            if j % 9 == 0 and j != 0:
+                temp += ' \n' + content[j] + " "
+            else: temp += content[j] + " "
         print(temp)
 
         #星座图片路径
@@ -106,7 +110,7 @@ def consImages():
             input("\n\033[1;31;40m星座图片不存在或路径不对: " + e.strerror + "\033[0;40m")
             return
         draw = ImageDraw.Draw(im1)
-        draw.text((450,230),temp ,(255,255,255),font=font)
+        draw.text((550,200),temp ,(255,255,255),font=font)
         # draw.text((1200,300),result['summary'],(255,255,255),font=font)
         try:
             if i < 9:
@@ -310,8 +314,8 @@ def main():
     checkconsPath(cons_save)
     cons_result = consImages() # 星座function
     checkPath(huangli_save)
-    h_result = huangli(today,huangli_path, huangli_save,today_list[2]+"01.jpg")    # 黄历function
-    h_result2 = huangli(tomorrow,huangli_path2, huangli_save,today_list[2]+"02.jpg")    # 黄历function
+    h_result = huangli(tomorrow,huangli_path, huangli_save,tomorrow_list[2]+"01.jpg")    # 黄历function
+    h_result2 = huangli(tomorrow_after,huangli_path2, huangli_save2,tomorrow_after_list[2]+"02.jpg")    # 黄历function
     countDown = 0
     while countDown < auto_close:
         print("\033[1;31;40m"+str(auto_close-countDown)+"\033[0;40m秒后自动关闭", end="\r")
