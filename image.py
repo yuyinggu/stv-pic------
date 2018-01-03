@@ -15,16 +15,16 @@ today_list = today.split("-")
 tomorrow_list = tomorrow.split("-")
 tomorrow_after = (datetime.now()+ timedelta(days=2)).strftime("%Y-%m-%d")
 tomorrow_after_list = tomorrow_after.split("-")
-cons_path = ""#"C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\" #星座背景文件夹路径（不含文件名）
-cons_save = ""#"\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ tomorrow_list[0]+"\\"+ tomorrow_list[1] +"\\"+ tomorrow_list[2] +"\\"+"Constellation/" #星座保存文件夹路径(不含文件名)
+cons_path = "C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\" #星座背景文件夹路径（不含文件名）
+cons_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ tomorrow_list[0]+"\\"+ tomorrow_list[1] +"\\"+ tomorrow_list[2] +"\\"+"Constellation/" #星座保存文件夹路径(不含文件名)
 #video_path = "test.flv" #星座视频输出路径 + 文件名
-huangli_path = "黃曆_Background-01.jpg"#"C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\黃曆_Background-01.jpg" #黄历背景图片路径
-huangli_path2 = "黃曆_Background-02.jpg"#"C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\黃曆_Background-02.jpg" #黄历背景图片路径
-huangli_save = ""#"\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ tomorrow_list[0]+"\\"+ tomorrow_list[1] +"\\"+ tomorrow_list[2] +"\\"+"SideAd/" #黄历输出图片路径+图片名
-huangli_save2 = ""#"\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ tomorrow_after_list[0]+"\\"+ tomorrow_after_list[1] +"\\"+ tomorrow_after_list[2] +"\\"+"SideAd/" #黄历输出图片路径+图片名
+huangli_path = "C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\黃曆_Background-01.jpg" #黄历背景图片路径
+huangli_path2 = "C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\黃曆_Background-02.jpg" #黄历背景图片路径
+huangli_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ tomorrow_list[0]+"\\"+ tomorrow_list[1] +"\\"+ tomorrow_list[2] +"\\"+"SideAd/" #黄历输出图片路径+图片名
+huangli_save2 = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ tomorrow_after_list[0]+"\\"+ tomorrow_after_list[1] +"\\"+ tomorrow_after_list[2] +"\\"+"SideAd/" #黄历输出图片路径+图片名
 auto_close = 15 #成功后多少秒自动关闭
 openCC = OpenCC('s2t')
-font_dir = ""#"C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\"
+font_dir = "C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\"
 record_dir = "" + today_list[1] +today_list[2] + ".txt" #txt文件路径
 txt_exist = False
 if os.path.exists(record_dir):
