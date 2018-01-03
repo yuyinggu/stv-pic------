@@ -21,11 +21,11 @@ cons_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Sou
 huangli_path = "C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\黃曆_Background-01.jpg" #黄历背景图片路径
 huangli_path2 = "C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\黃曆_Background-02.jpg" #黄历背景图片路径
 huangli_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ tomorrow_list[0]+"\\"+ tomorrow_list[1] +"\\"+ tomorrow_list[2] +"\\"+"SideAd/" #黄历输出图片路径+图片名
-huangli_save2 = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ tomorrow_after_list[0]+"\\"+ tomorrow_after_list[1] +"\\"+ tomorrow_after_list[2] +"\\"+"SideAd/" #黄历输出图片路径+图片名
+huangli_save2 = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ tomorrow_list[0]+"\\"+ tomorrow_list[1] +"\\"+ tomorrow_list[2] +"\\"+"SideAd/" #黄历输出图片路径+图片名
 auto_close = 15 #成功后多少秒自动关闭
 openCC = OpenCC('s2t')
 font_dir = "C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\"
-record_dir = "" + today_list[1] +today_list[2] + ".txt" #txt文件路径
+record_dir = "" + tomorrow_list[1] +tomorrow_list[2] + ".txt" #txt文件路径
 txt_exist = False
 if os.path.exists(record_dir):
     txt_exist = True
@@ -129,13 +129,13 @@ def consImages():
             input("\n\033[1;31;40m星座图片不存在或路径不对: " + e.strerror + "\033[0;40m")
             return
         draw = ImageDraw.Draw(im1)
-        draw.text((450,230),temp ,(255,255,255),font=font)
+        draw.text((435,230),temp ,(255,255,255),font=font)
         # draw.text((1200,300),result['summary'],(255,255,255),font=font)
         try:
             if i < 9:
-                im1.save(cons_save + today_list[2] +"0"+ str(i+1) +".jpg",quality=100)
+                im1.save(cons_save + tomorrow_list[2] +"0"+ str(i+1) +".jpg",quality=100)
             else:
-                im1.save(cons_save + today_list[2] + str(i+1) +".jpg",quality=100)
+                im1.save(cons_save + tomorrow_list[2] + str(i+1) +".jpg",quality=100)
         except OSError as e:
             input(e.strerror)
             return False
@@ -355,7 +355,7 @@ def main():
     checkconsPath(cons_save)
     cons_result = consImages() # 星座function
     checkPath(huangli_save)
-    h_result = huangli(tomorrow,huangli_path, huangli_save,today_list[2]+"01.jpg")    # 黄历function
+    h_result = huangli(tomorrow,huangli_path, huangli_save,tomorrow_list[2]+"01.jpg")    # 黄历function
     h_result2 = huangli(tomorrow_after,huangli_path2, huangli_save2,tomorrow_list[2]+"02.jpg")    # 黄历function
     countDown = 0
     while countDown < auto_close:
