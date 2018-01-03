@@ -25,7 +25,7 @@ huangli_save2 = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\
 auto_close = 15 #成功后多少秒自动关闭
 openCC = OpenCC('s2t')
 font_dir = "\\\\vdisk.chineseradio.local\\it\\Jobs\\Constellation\\Photo\\"#"C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\"
-record_dir = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ tomorrow_list[0]+"\\"+ tomorrow_list[1] +"\\"+ tomorrow_list[2] +"\\"+"Constellation/" + tomorrow_list[1] +tomorrow_list[2] + ".txt" #txt文件路径
+record_dir = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ tomorrow_list[0]+"\\"+ tomorrow_list[1] +"\\"+ tomorrow_list[2] +"\\" + tomorrow_list[1] +tomorrow_list[2] + ".txt" #txt文件路径
 txt_exist = False
 if os.path.exists(record_dir):
     txt_exist = True
