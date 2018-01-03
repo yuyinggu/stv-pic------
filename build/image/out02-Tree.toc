@@ -1,6 +1,6 @@
 ('c:\\users\\helen.gu\\appdata\\local\\programs\\python\\python36-32\\lib\\site-packages\\opencc_python-0.1.0-py3.6.egg',
  None,
- {'EGG-INFO', '*.so', '*.py', '*.pyo', '*.pyc', '*.pyd'},
+ {'*.pyc', '*.py', 'EGG-INFO', '*.pyd', '*.pyo', '*.so'},
  'DATA',
  [('opencc\\LICENSE',
    'c:\\users\\helen.gu\\appdata\\local\\programs\\python\\python36-32\\lib\\site-packages\\opencc_python-0.1.0-py3.6.egg\\opencc\\LICENSE',
