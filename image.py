@@ -15,20 +15,24 @@ today_list = today.split("-")
 tomorrow_list = tomorrow.split("-")
 tomorrow_after = (datetime.now()+ timedelta(days=2)).strftime("%Y-%m-%d")
 tomorrow_after_list = tomorrow_after.split("-")
-cons_path = "\\\\vdisk.chineseradio.local\\it\\Jobs\\Constellation\\Photo\\"#"C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\" #星座背景文件夹路径（不含文件名）
-cons_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ tomorrow_list[0]+"\\"+ tomorrow_list[1] +"\\"+ tomorrow_list[2] +"\\"+"Constellation/" #星座保存文件夹路径(不含文件名)
+cons_path = ""#"\\\\vdisk.chineseradio.local\\it\\Jobs\\Constellation\\Photo\\"#"C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\" #星座背景文件夹路径（不含文件名）
+cons_save = ""#"\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ tomorrow_list[0]+"\\"+ tomorrow_list[1] +"\\"+ tomorrow_list[2] +"\\"+"Constellation/" #星座保存文件夹路径(不含文件名)
 #video_path = "test.flv" #星座视频输出路径 + 文件名
-huangli_path = "\\\\vdisk.chineseradio.local\\it\\Jobs\\Constellation\\Photo\\Background-01.jpg" #黄历背景图片路径
-huangli_path2 = "\\\\vdisk.chineseradio.local\\it\\Jobs\\Constellation\\Photo\\Background-02.jpg" #黄历背景图片路径
-huangli_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ tomorrow_list[0]+"\\"+ tomorrow_list[1] +"\\"+ tomorrow_list[2] +"\\"+"SideAd/" #黄历输出图片路径+图片名
-huangli_save2 = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ tomorrow_list[0]+"\\"+ tomorrow_list[1] +"\\"+ tomorrow_list[2] +"\\"+"SideAd/" #黄历输出图片路径+图片名
+huangli_path = "黃曆_Background-01.jpg"#"\\\\vdisk.chineseradio.local\\it\\Jobs\\Constellation\\Photo\\Background-01.jpg" #黄历背景图片路径
+huangli_path2 = "黃曆_Background-02.jpg"#"\\\\vdisk.chineseradio.local\\it\\Jobs\\Constellation\\Photo\\Background-02.jpg" #黄历背景图片路径
+huangli_save = ""#"\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ tomorrow_list[0]+"\\"+ tomorrow_list[1] +"\\"+ tomorrow_list[2] +"\\"+"SideAd/" #黄历输出图片路径+图片名
+huangli_save2 = ""#"\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ tomorrow_list[0]+"\\"+ tomorrow_list[1] +"\\"+ tomorrow_list[2] +"\\"+"SideAd/" #黄历输出图片路径+图片名
 auto_close = 15 #成功后多少秒自动关闭
 openCC = OpenCC('s2t')
-font_dir = "\\\\vdisk.chineseradio.local\\it\\Jobs\\Constellation\\Photo\\"#"C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\"
-record_dir = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ tomorrow_list[0]+"\\"+ tomorrow_list[1] +"\\"+ tomorrow_list[2] +"\\"+ tomorrow_list[1] + tomorrow_list[2] + ".txt" #txt文件路径
+font_dir = ""#"\\\\vdisk.chineseradio.local\\it\\Jobs\\Constellation\\Photo\\"#"C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\"
+record_dir = "0104.txt"#"\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ tomorrow_list[0]+"\\"+ tomorrow_list[1] +"\\"+ tomorrow_list[2] +"\\"+ tomorrow_list[1] + tomorrow_list[2] + ".txt" #txt文件路径
 txt_exist = False
 if os.path.exists(record_dir):
-    txt_exist = True
+    with open(record_dir, "r", encoding="utf8") as txt_file:
+        if len(txt_file.readlines()) >= 36:
+            txt_exist = True
+        else:
+            print("txt文件内容不符，跳过。。。。")
  # ---------------------------------------------------------
 #获取星座数据
 #聚合
@@ -39,7 +43,7 @@ def getConstellation(cons):
     params = {
         "key": API_KEYS,
         "consName": cons,
-        "type": "tomorrow"
+        "type": "today"
         }
 
     params = urlencode(params)
@@ -275,13 +279,13 @@ def huangli(day,in_path,out_path,file_name):
     font = ImageFont.truetype(font_dir+"msyhbd.ttc",40,encoding='unic')
     Ypos = 350
     for i,val in enumerate(yiList):
-        if (line_words+len(val) > 10) and i < 8:
+        if (line_words+len(val) > 10) and i < 11:
             xPos = getMidPos(yi, width, 45) #30pt 微软雅黑字体 约等于 34 pixel
             draw.text((xPos,Ypos),yi,color,font=font)
             Ypos += 45
             yi = yiList[i] + ' '
             line_words = len(val)
-        elif i < 9:
+        elif i < 12:
             line_words += len(yiList[i])
             yi += yiList[i] + ' '
 
@@ -297,13 +301,13 @@ def huangli(day,in_path,out_path,file_name):
     font = ImageFont.truetype(font_dir+"msyhbd.ttc",40,encoding='unic')
     Ypos = 600
     for i,val in enumerate(jiList):
-        if (line_words+len(val) > 10) and i < 8:
+        if (line_words+len(val) > 10) and i < 11:
             xPos = getMidPos(ji, width, 45) #30pt 微软雅黑字体 约等于 34 pixel
             draw.text((xPos,Ypos),ji,color,font=font)
             Ypos += 45
             ji = jiList[i] + ' '
             line_words = len(val)
-        elif i < 9:
+        elif i < 12:
             line_words += len(jiList[i])
             ji += jiList[i] + ' '
 
