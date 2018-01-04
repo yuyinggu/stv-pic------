@@ -21,7 +21,6 @@ cons_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Sou
 huangli_path = "\\\\vdisk.chineseradio.local\\it\\Jobs\\Constellation\\Photo\\Background-01.jpg" #黄历背景图片路径
 huangli_path2 = "\\\\vdisk.chineseradio.local\\it\\Jobs\\Constellation\\Photo\\Background-02.jpg" #黄历背景图片路径
 huangli_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ tomorrow_list[0]+"\\"+ tomorrow_list[1] +"\\"+ tomorrow_list[2] +"\\"+"SideAd/" #黄历输出图片路径+图片名
-huangli_save2 = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ tomorrow_list[0]+"\\"+ tomorrow_list[1] +"\\"+ tomorrow_list[2] +"\\"+"SideAd/" #黄历输出图片路径+图片名
 auto_close = 15 #成功后多少秒自动关闭
 openCC = OpenCC('s2t')
 font_dir = "\\\\vdisk.chineseradio.local\\it\\Jobs\\Constellation\\Photo\\"#"C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\"
@@ -110,7 +109,7 @@ def consImages():
             with open(record_dir, "r", encoding="utf8") as txt_file:
                 result = txt_file.readlines()
                 index = result.index(cons+"\n")
-                content = result[index+1][:-2]
+                content = result[index+1][:-1]
 
         temp = ""
         for j in range(len(content)):
@@ -227,7 +226,7 @@ def huangli(day,in_path,out_path,file_name):
     #---------------------------------------------------------
     # 农历 yinli
     # "甲午(马)年八月十八"
-    xPos = getMidPos(yinli, width, 35) #35pt 微软雅黑字体 约等于 30 pixel
+    xPos = getMidPos(yinli, width, 35) #35pt 微软雅黑字体 约等于 40 pixel
     font = ImageFont.truetype(font_dir+"msyhbd.ttc",40,encoding='unic')
     draw.text((xPos,210),yinli ,color,font=font)
     #---------------------------------------------------------
@@ -360,7 +359,7 @@ def main():
     cons_result = consImages() # 星座function
     checkPath(huangli_save)
     h_result = huangli(tomorrow,huangli_path, huangli_save,tomorrow_list[2]+"01.jpg")    # 黄历function
-    h_result2 = huangli(tomorrow_after,huangli_path2, huangli_save2,tomorrow_list[2]+"02.jpg")    # 黄历function
+    h_result2 = huangli(tomorrow_after,huangli_path2, huangli_save,tomorrow_list[2]+"02.jpg")    # 黄历function
     countDown = 0
     while countDown < auto_close:
         print("\033[1;31;40m"+str(auto_close-countDown)+"\033[0;40m秒后自动关闭", end="\r")
