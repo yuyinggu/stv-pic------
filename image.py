@@ -193,9 +193,9 @@ def huangli(day,in_path,out_path,file_name):
         with open(record_dir, "r", encoding='utf8') as txt_file:
             result = txt_file.readlines()
             index = result.index(day+"\n")
-            yinli = result[index+1][:-2]
-            yi = result[index+3][:-2]
-            ji = result[index+5][:-2]
+            yinli = result[index+1][:-1]
+            yi = result[index+3][:-1]
+            ji = result[index+5][:-1]
             print("阴历: "+yinli + "\n宜:\t"+ yi + "\n吉:\t"+ji)
     # 黄历背景图片
     try:
