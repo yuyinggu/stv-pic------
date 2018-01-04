@@ -8,7 +8,7 @@ import subprocess
 from time import sleep
 from opencc import OpenCC
 # ---------------------------------------------------------
-#全局设置
+#全局设
 today = (datetime.now()).strftime("%Y-%m-%d") # 加 '+ timedelta(days=1)' 在now()后面测试明天的
 tomorrow = (datetime.now()+ timedelta(days=1)).strftime("%Y-%m-%d")
 today_list = today.split("-")
