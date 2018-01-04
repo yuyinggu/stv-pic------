@@ -285,7 +285,7 @@ def huangli(day,in_path,out_path,file_name):
             Ypos += 45
             yi = yiList[i] + ' '
             line_words = len(val)
-        elif i < 12:
+        elif i < 14:
             line_words += len(yiList[i])
             yi += yiList[i] + ' '
 
@@ -307,7 +307,7 @@ def huangli(day,in_path,out_path,file_name):
             Ypos += 45
             ji = jiList[i] + ' '
             line_words = len(val)
-        elif i < 12:
+        elif i < 14:
             line_words += len(jiList[i])
             ji += jiList[i] + ' '
 
