@@ -213,7 +213,7 @@ def huangli(day,in_path,out_path,file_name):
     # "2017 年 12 月"
     # date = yangli[0]+ " 年 " + yangli[1] + " 月"
     # xPos = getMidPos(date, width, 36)
-    # font = ImageFont.truetype("msyhbd.ttc",45,encoding='unic')
+    # font = ImageFont.truetype("msyhbd.ttc",45,encoding='utf8')
     # draw.text((xPos,40),date ,color,font=font)
     #---------------------------------------------------------
     # 日
@@ -221,7 +221,7 @@ def huangli(day,in_path,out_path,file_name):
     # xPos = getMidPos(day, width, 170)
     # if int(day) < 10:
     #     xPos += 15
-    # font = ImageFont.truetype("msyhbd.ttc",270,encoding='unic')
+    # font = ImageFont.truetype("msyhbd.ttc",270,encoding='utf8')
     # draw.text((xPos,30),day,color,font=font)
     #---------------------------------------------------------
     # 农历 yinli
@@ -247,7 +247,7 @@ def huangli(day,in_path,out_path,file_name):
     # for i,Yposition in enumerate(Y): # 第一行 第二行  Y轴
     #     jishen = temp[i]
     #     xPos = getMidPos(jishen, width, 34) #20pt 微软雅黑字体 约等于 23 pixel
-    #     font = ImageFont.truetype(font_dir+"msyhbd.ttc",30,encoding='unic')
+    #     font = ImageFont.truetype(font_dir+"msyhbd.ttc",30,encoding='utf8')
     #     draw.text((xPos,Yposition),jishen ,color,font=font)
     #---------------------------------------------------------
     # 凶神 xiongshen
@@ -267,7 +267,7 @@ def huangli(day,in_path,out_path,file_name):
     # for i,Yposition in enumerate(Y): # 第一行 第二行  Y轴
     #     xiongshen = temp[i]
     #     xPos = getMidPos(xiongshen, width, 34) #20pt 微软雅黑字体 约等于 23 pixel
-    #     font = ImageFont.truetype(font_dir+"msyhbd.ttc",30,encoding='unic')
+    #     font = ImageFont.truetype(font_dir+"msyhbd.ttc",30,encoding='utf8')
     #     draw.text((xPos,Yposition),xiongshen ,color,font=font)
     #---------------------------------------------------------
     # 宜 yi
@@ -341,7 +341,7 @@ def checkPath(input_path):
 def test():
     # ----------------------------------------------------------测试星座图片修改
     # img_path = "C:\\Users\\Andy\\Pictures\\1.jpg"
-    # font = ImageFont.truetype("msyhbd.ttc",55,encoding='unic')
+    # font = ImageFont.truetype("msyhbd.ttc",55,encoding='utf8')
     # im1 = Image.open(img_path)
     # draw = ImageDraw.Draw(im1)
     # draw.text((550,300),'搭理 我' ,(255,255,255),font=font)
