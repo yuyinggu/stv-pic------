@@ -136,9 +136,9 @@ def consImages():
         # draw.text((1200,300),result['summary'],(255,255,255),font=font)
         try:
             if i < 9:
-                im1.save(cons_save + tomorrow_list[2] +"0"+ str(i+1) +".jpg",quality=100)
+                im1.save(cons_save + tomorrow_list[0] + tomorrow_list[1]+tomorrow_list[2] + "-" + "0"+ str(i+1) +".jpg",quality=100)
             else:
-                im1.save(cons_save + tomorrow_list[2] + str(i+1) +".jpg",quality=100)
+                im1.save(cons_save + tomorrow_list[0] + tomorrow_list[1]+tomorrow_list[2] + "-" + str(i+1) +".jpg",quality=100)
         except OSError as e:
             input(e.strerror)
             return False
@@ -358,8 +358,8 @@ def main():
     checkconsPath(cons_save)
     cons_result = consImages() # 星座function
     checkPath(huangli_save)
-    h_result = huangli(tomorrow,huangli_path, huangli_save,tomorrow_list[2]+"01.jpg")    # 黄历function
-    h_result2 = huangli(tomorrow_after,huangli_path2, huangli_save,tomorrow_list[2]+"02.jpg")    # 黄历function
+    h_result = huangli(tomorrow,huangli_path, huangli_save,tomorrow_list[0] + tomorrow_list[1]+tomorrow_list[2]+ "-" +"01.jpg")    # 黄历function
+    h_result2 = huangli(tomorrow_after,huangli_path2, huangli_save,tomorrow_list[0] + tomorrow_list[1]+tomorrow_list[2]+ "-" + "02.jpg")    # 黄历function
     countDown = 0
     while countDown < auto_close:
         print("\033[1;31;40m"+str(auto_close-countDown)+"\033[0;40m秒后自动关闭", end="\r")

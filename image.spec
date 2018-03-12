@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['image.py'],
-             pathex=['C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------'],
+             pathex=['C:\\Users\\helen.gu\\My Documents\\github\\stv-pic------'],
              binaries=[],
              datas=[],
              hiddenimports=[],
