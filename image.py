@@ -47,15 +47,20 @@ def getConstellation(cons):
 
     params = urlencode(params)
     # print(params)
-    f = urlopen("%s?%s" % (url, params))
-    res = json.loads(f.read().decode())
+    try:
+        f = urlopen("%s?%s" % (url, params))
+        res = json.loads(f.read().decode())
+
+        if not txt_exist:
+            with open(record_dir,"a",encoding='utf8') as txt_file:
+                txt_file.write(cons+"\n")
+                txt_file.write(openCC.convert(res["summary"])+"\n")
+                txt_file.close()
+    except:
+        pass
     # with open("星座.txt", "w") as f:
     #     f.write(json.dumps(res))
-    if not txt_exist:
-        with open(record_dir,"a",encoding='utf8') as txt_file:
-            txt_file.write(cons+"\n")
-            txt_file.write(openCC.convert(res["summary"])+"\n")
-            txt_file.close()
+
     try:
         return(openCC.convert(res["summary"]))
     except:
