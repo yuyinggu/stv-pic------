@@ -32,7 +32,8 @@ if os.path.exists(record_dir):
             txt_exist = True
         else:
             print("txt文件内容不符，跳过。。。。")
- # ---------------------------------------------------------
+
+# ---------------------------------------------------------
 #获取星座数据
 #聚合
 def getConstellation(cons):
@@ -57,9 +58,10 @@ def getConstellation(cons):
                 txt_file.write(openCC.convert(res["summary"])+"\n")
                 txt_file.close()
     except:
+        with open(record_dir,"a",encoding='utf8') as txt_file:
+            txt_file.write("")
+            txt_file.close()
         pass
-    # with open("星座.txt", "w") as f:
-    #     f.write(json.dumps(res))
 
     try:
         return(openCC.convert(res["summary"]))
@@ -86,12 +88,12 @@ def getConstellation2(cons):
     # print(params)
     f = urlopen("%s?%s" % (url, params))
     res = json.loads(f.read().decode())
-    # with open("星座.txt", "w") as f:
-    #     f.write(json.dumps(res))
+
     try:
         return(openCC.convert(res["showapi_res_body"]["day"]["day_notice"]))
     except:
         return()
+
 #---------------------------------------------------------
 #修改十二星座的图片
 def checkconsPath(input_path):
@@ -108,13 +110,15 @@ def consImages():
     for i,cons in enumerate(cons_list):
         print(i+1,cons)
 
-        if not txt_exist:
-            content = getConstellation(cons)
-        else:
+        getConstellation(cons)
+
+        try:
             with open(record_dir, "r", encoding="utf8") as txt_file:
                 result = txt_file.readlines()
                 index = result.index(cons+"\n")
                 content = result[index+1][:-1]
+        except:
+            print("txt文件不存在")
 
         temp = ""
         for j in range(len(content)):
@@ -149,12 +153,6 @@ def consImages():
             return False
         print("\n\033[1;32;40m%s图片生成成功\n\033[0;40m" % cons)
     return True
-    # with open("星座.txt", "r") as f:
-    #     result = f.readline()
-    # result = json.loads(result)
-    # print(result['summary'])
-    #
-    # # text = result['summary']
 
 
 # ---------------------------------------------------------
@@ -354,7 +352,6 @@ def test():
 
     # ----------------------------------------------------------测试黄历
     print(datetime.now().strftime("%Y-%m-%d").split('-')[0])
-
 
 
 def main():
