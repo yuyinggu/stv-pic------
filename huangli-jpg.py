@@ -9,11 +9,11 @@ tomorrow_list = tomorrow.split("-")
 tomorrow_after = (datetime.now()+ timedelta(days=2)).strftime("%Y-%m-%d")
 tomorrow_after_list = tomorrow_after.split("-")
 
-huangli_path = "\\\\vdisk.chineseradio.local\\it\\Jobs\\Constellation\\Photo\\Background-01.jpg" #黄历背景图片路径
-huangli_path2 = "\\\\vdisk.chineseradio.local\\it\\Jobs\\Constellation\\Photo\\Background-02.jpg" #黄历背景图片路径
-huangli_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ tomorrow_list[0]+"\\"+ tomorrow_list[1] +"\\"+ tomorrow_list[2] +"\\"+"SideAd/" #黄历输出图片路径
-huangli_txt = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ tomorrow_list[0]+"\\"+ tomorrow_list[1] +"\\"+ tomorrow_list[2] +"\\"+ tomorrow_list[1] + tomorrow_list[2] + "huangli" + ".txt" #txt文件路径
-font_dir = "\\\\vdisk.chineseradio.local\\it\\Jobs\\Constellation\\Photo\\"#"C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\"
+huangli_path = "/Users/andymao/Documents/stv-pic------/黃曆_Background-01.jpg"#"\\\\vdisk.chineseradio.local\\it\\Jobs\\Constellation\\Photo\\Background-01.jpg" #黄历背景图片路径
+huangli_path2 = "/Users/andymao/Documents/stv-pic------/黃曆_Background-02.jpg"##"\\\\vdisk.chineseradio.local\\it\\Jobs\\Constellation\\Photo\\Background-02.jpg" #黄历背景图片路径
+huangli_save = "/Users/andymao/Documents/stv-pic------/"##"\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ tomorrow_list[0]+"\\"+ tomorrow_list[1] +"\\"+ tomorrow_list[2] +"\\"+"SideAd/" #黄历输出图片路径
+huangli_txt = "/Users/andymao/Documents/stv-pic------/huangli.txt"##"\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ tomorrow_list[0]+"\\"+ tomorrow_list[1] +"\\"+ tomorrow_list[2] +"\\"+ tomorrow_list[1] + tomorrow_list[2] + "huangli" + ".txt" #txt文件路径
+font_dir = "/Users/andymao/Documents/stv-pic------/"##"\\\\vdisk.chineseradio.local\\it\\Jobs\\Constellation\\Photo\\"#"C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\"
 
 if not os.path.exists(huangli_txt):
     print("黄历txt不存在")
@@ -74,7 +74,7 @@ def huangli(day,in_path,out_path,file_name):
             Ypos += 45
             yi = yiList[i] + ' '
             line_words = len(val)
-        elif i < 14:
+        elif i < 12:     #最后一行 字数
             line_words += len(yiList[i])
             yi += yiList[i] + ' '
 
@@ -97,7 +97,7 @@ def huangli(day,in_path,out_path,file_name):
             Ypos += 45
             ji = jiList[i] + ' '
             line_words = len(val)
-        elif i < 14:
+        elif i < 12:    #最后一行 字数
             line_words += len(jiList[i])
             ji += jiList[i] + ' '
 

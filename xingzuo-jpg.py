@@ -29,10 +29,17 @@ for i,cons in enumerate(cons_list):
 
     # 分行
     temp = ""
+    rows_count = 1
     for j in range(len(content)):
-        if j % 13 == 0 and j != 0:
+        if j % 13 == 0 and j != 0: #每行13字
             temp += ' \n' + content[j]
-        else: temp += content[j]
+            rows_count += 1
+        elif j == 13 * 7 -1:       #替换第七行 第十三个字 为 ...
+            temp += '...'
+            break
+        else:
+            temp += content[j]
+
     print(temp)
 
     # 生成图片

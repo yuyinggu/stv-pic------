@@ -15,7 +15,7 @@ event_img_path = 'weekend_event.jpg'
 # 保存图片文件夹路径
 event_img_save = ''
 # xlsx 文件路径
-xlsx_path = 'weekend.xlsx' 
+xlsx_path = 'weekend.xlsx'
 
 ################################################
 # 合成活动图片
