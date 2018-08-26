@@ -58,7 +58,7 @@ def video_downloader(file_path, file_name, download_link):
     req = requests.get(download_link)
     if not os.path.exists(file_path):
         os.makedirs(file_path)
-    with open(file_path, 'wb') as f:
+    with open(os.path.join(mp4_save_path, file_path, file_name + '.mp4'), 'wb') as f:
         f.write(req.content)
         f.close()
     print("{} downloaded {}".format(file_name, f.name))
