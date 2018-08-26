@@ -12,11 +12,36 @@ tomorrow_list = tomorrow.split("-")
 tomorrow_after = (datetime.now()+ timedelta(days=2)).strftime("%Y-%m-%d")
 tomorrow_after_list = tomorrow_after.split("-")
 
-cons_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ tomorrow_list[0]+"\\"+ tomorrow_list[1] +"\\"+ tomorrow_list[2] +"\\"+"Constellation/" #星座保存文件夹路径(不含文件名)
-huangli_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ tomorrow_list[0]+"\\"+ tomorrow_list[1] +"\\"+ tomorrow_list[2] +"\\"+"SideAd/" #黄历输出图片路径
+# 测试用途
+# cons_save = ""
+# huangli_save = ""
+# constellation_txt = "constellation.txt"
+# huangli_txt = "huangli.txt"
 openCC = OpenCC('s2t')
-constellation_txt = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ tomorrow_list[0]+"\\"+ tomorrow_list[1] +"\\"+ tomorrow_list[2] +"\\"+ tomorrow_list[1] + tomorrow_list[2] + "constellation" + ".txt" #txt文件路径
-huangli_txt = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ tomorrow_list[0]+"\\"+ tomorrow_list[1] +"\\"+ tomorrow_list[2] +"\\"+ tomorrow_list[1] + tomorrow_list[2] + "huangli" + ".txt" #txt文件路径
+
+cons_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\" \
+            + tomorrow_list[0] + "\\" \
+            + tomorrow_list[1] + "\\" \
+            + tomorrow_list[2] + "\\" \
+            + "Constellation/" #星座保存文件夹路径(不含文件名)
+
+huangli_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\" \
+               + tomorrow_list[0]+"\\" \
+               + tomorrow_list[1] + "\\" \
+               + tomorrow_list[2] + "\\" \
+               + "SideAd/" #黄历输出图片路径
+
+constellation_txt = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\" \
+                    + tomorrow_list[0]+"\\" \
+                    + tomorrow_list[1] + "\\" \
+                    + tomorrow_list[2] + "\\" \
+                    + tomorrow_list[1] + tomorrow_list[2] + "constellation.txt" #txt文件路径
+
+huangli_txt = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\" \
+              + tomorrow_list[0] + "\\" \
+              + tomorrow_list[1] + "\\" \
+              + tomorrow_list[2] + "\\" \
+              + tomorrow_list[1] + tomorrow_list[2] + "huangli.txt" #txt文件路径
 
 
 def checkPath(input_path):
@@ -26,6 +51,7 @@ def checkPath(input_path):
         if not os.path.exists(input_path):
             print("文件夹不存在,创建文件夹：\n")
             os.makedirs(input_path)
+
 
 def getConstellation(cons):
     global txt_file
@@ -50,6 +76,7 @@ def getConstellation(cons):
             txt_file.close()
     except:
         print("\n无法拿到星座")
+
 
 def get_huangli(day):
     API_KEYS = "53dbd012b1d059f89396127e54539a70"

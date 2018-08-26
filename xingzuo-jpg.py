@@ -9,10 +9,24 @@ tomorrow_list = tomorrow.split("-")
 tomorrow_after = (datetime.now()+ timedelta(days=2)).strftime("%Y-%m-%d")
 tomorrow_after_list = tomorrow_after.split("-")
 
+# 测试用途
+# cons_path = ""
+# cons_save = ""
+# font_dir = ""
+# constellation_txt = "constellation" + ".txt"
+
 cons_path = "\\\\vdisk.chineseradio.local\\it\\Jobs\\Constellation\\Photo\\"#"C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\" #星座背景文件夹路径（不含文件名）
-cons_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ tomorrow_list[0]+"\\"+ tomorrow_list[1] +"\\"+ tomorrow_list[2] +"\\"+"Constellation/" #星座保存文件夹路径(不含文件名)
+cons_save = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\" \
+            + tomorrow_list[0] + "\\" \
+            + tomorrow_list[1] + "\\" \
+            + tomorrow_list[2] + "\\" \
+            + "Constellation/" #星座保存文件夹路径(不含文件名)
 font_dir = "\\\\vdisk.chineseradio.local\\it\\Jobs\\Constellation\\Photo\\"#"C:\\Users\\helen.gu\\Documents\\GitHub\\stv-pic------\\"
-constellation_txt = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\"+ tomorrow_list[0]+"\\"+ tomorrow_list[1] +"\\"+ tomorrow_list[2] +"\\"+ tomorrow_list[1] + tomorrow_list[2] + "constellation" + ".txt" #txt文件路径
+constellation_txt = "\\\\vdisk.chineseradio.local\\VideoWork\\OtherVideos\\STPlayer\\Source\\" \
+                    + tomorrow_list[0] + "\\" \
+                    + tomorrow_list[1] + "\\" \
+                    + tomorrow_list[2] + "\\" \
+                    + tomorrow_list[1] + tomorrow_list[2] + "constellation.txt" #txt文件路径
 
 if not os.path.exists(constellation_txt):
     print("星座txt不存在")
