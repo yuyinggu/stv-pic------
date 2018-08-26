@@ -45,15 +45,15 @@ def random_headers():
 def video_downloader(file_path, file_name, download_link):
     supported_video_format = ['mp4']
     format_supported = False
-    file_path = os.path.join(mp4_save_path, file_path, file_name + '.mp4')
+    path = os.path.join(*[mp4_save_path, file_path, file_name + '.mp4'])
     for video_format in supported_video_format:
         if video_format in download_link:
             format_supported = True
     if not format_supported:
         print('视频格式不支持: %s' % download_link)
         return
-    if os.path.exists(file_path):
-        print('{} 已存在'.format(file_path))
+    if os.path.exists(path):
+        print('{} 已存在'.format(path))
         return
     req = requests.get(download_link)
     if not os.path.exists(file_path):
