@@ -155,10 +155,10 @@ def popnews_ftp_comparor():
             video_title = ''
             video_cat = ''
 
-            with open(csv_name, 'a', encoding='utf-8') as f:
-                f.write('{0},{1},{2}\n'.format(mp4_name, video_title.replace(',', ' '), video_cat))
-                print("找到视频：{0} 标题：{1} 分类：{2}".format(mp4_name, video_title, video_cat))
-                f.close()
+        with open(csv_name, 'a', encoding='utf-8') as f:
+            f.write('{0},{1},{2}\n'.format(mp4_name, video_title.replace(',', ' '), video_cat))
+            print("找到视频：{0} 标题：{1} 分类：{2}".format(mp4_name, video_title, video_cat))
+            f.close()
 
 
 # 捉取中新网MP4链接
