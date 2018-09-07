@@ -109,7 +109,7 @@ def pop_news_handler():
             video_title = video.find('a').get('title')
             # req = requests.get(video_sub_page, headers=random_headers())
             driver = webdriver.Chrome(executable_path='chromedriver.exe')
-            driver.set_page_load_timeout(15)
+            driver.set_page_load_timeout(30)
             try:
                 driver.get(video_sub_page)
             except:
@@ -144,11 +144,22 @@ def popnews_ftp_comparor():
 
     for fg in file_gen:
         mp4_name = fg[0]
-
         if mp4_name in video_records:
             video_title = video_records[mp4_name][0]
             video_cat = video_records[mp4_name][1]
+            if os.path.exists(csv_name):
+                with open(csv_name, 'r', encoding='utf-8') as f:
+                    f_content = f.read()
+                    f.close()
+                if mp4_name in f_content:
+                    continue
         else:
+            if os.path.exists(csv_name):
+                with open(csv_name, 'r', encoding='utf-8') as f:
+                    f_content = f.read()
+                    f.close()
+                if mp4_name in f_content:
+                    continue
             video_title = ''
             video_cat = ''
 
