@@ -129,6 +129,9 @@ def popnews_ftp_comparor():
     today_date = (datetime.now() - timedelta(days=0)).strftime("%Y%m%d")  # 20180904
     video_records = pop_news_handler()
 
+    #with open('test_records.pkl', 'rb') as f:
+    #    video_records = pickle.load(f)
+    #    f.close()
     # 保存 video_records 测试用途
     with open('test_records.pkl', 'wb') as f:
         pickle.dump(video_records, f)
