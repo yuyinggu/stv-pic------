@@ -24,17 +24,18 @@ videos_source = {}
 videos_source['popnews'] = []
 videos_source['pearvideo'] = []
 videos_source['chinanews'] = []
-# videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=new', '最新'])   # Pop News 最新
-videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=a', '港闻'])     # Pop News 港闻
-videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=f', '娱乐'])     # Pop News 娱乐
-videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=b', '国际'])     # Pop News 国际
-videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=e', '两岸'])     # Pop News 两岸
+videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=new', '最新'])   # Pop News 最新
+videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=a', '港聞'])     # Pop News 港闻
+videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=f', '娛樂'])     # Pop News 娱乐
+videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=b', '國際'])     # Pop News 国际
+videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=e', '兩岸'])     # Pop News 两岸
 videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=l', '生活'])     # Pop News 生活
-videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=m', '电影'])     # Pop News 电影
-videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=c', '体育'])     # Pop News 体育
-videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=d', '财经'])     # Pop News 财经
-videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=s', '亲子王'])     # Pop News 亲子王
-videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=ppl', '名人导航'])     # Pop News 名人导航
+videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=m', '電影'])     # Pop News 电影
+videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=c', '體育'])     # Pop News 体育
+videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=d', '財經'])     # Pop News 财经
+videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=s', '親子王'])     # Pop News 亲子王
+videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=ppl', '名人導航'])     # Pop News 名人导航
+videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=h', '地產'])     # Pop News 地產
 videos_source['pearvideo'].append('https://www.pearvideo.com/category_2')          # 梨视频 世界
 videos_source['chinanews'].append('https://www.chinanews.com/shipin/')             # 中新网
 
