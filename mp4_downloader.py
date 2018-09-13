@@ -70,7 +70,7 @@ def random_headers():
 def video_downloader(file_path, file_name, download_link):
     supported_video_format = ['mp4']
     format_supported = False
-    path = os.path.join(*[mp4_save_path, file_path, file_name + '.mp4'])
+    path = os.path.join(*[mp4_save_path, file_path, re.sub('\?|\|\*|\"', '', file_name) + '.mp4'])
     for video_format in supported_video_format:
         if video_format in download_link:
             format_supported = True
@@ -83,7 +83,7 @@ def video_downloader(file_path, file_name, download_link):
     req = requests.get(download_link)
     if not os.path.exists(file_path):
         os.makedirs(file_path)
-    with open(os.path.join(mp4_save_path, file_path, file_name + '.mp4'), 'wb') as f:
+    with open(path, 'wb') as f:
         f.write(req.content)
         f.close()
     print("{} downloaded {}".format(file_name, f.name))
@@ -93,7 +93,10 @@ def itouchtv_video_handler():
     for source in videos_source['itouchtv']:
         driver.maximize_window()
         # driver.set_page_load_timeout(30)
-        driver.get(source[0])
+        try:
+            driver.get(source[0])
+        except:
+            continue
         windows_height = driver.execute_script("return document.body.clientHeight")
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         sleep(2)
@@ -109,6 +112,7 @@ def itouchtv_video_handler():
             video_title = item.find('a', {"class": "pushList__pushItemBox___2MME6"})['title']
             print(video_sublink, video_title)
             driver.get('https://www.itouchtv.cn%s' % video_sublink)
+            sleep(3)
             if re.search('src=\"(http.*?\.mp4)', driver.page_source):
                 video_link = re.search('src=\"(http.*?\.mp4)', driver.page_source).group(1)
                 print(video_title, video_link)
@@ -235,9 +239,9 @@ def main():
     for source in videos_source:
         if source == 'popnews':
             popnews_ftp_comparor()
-        elif source == 'pearvideo':
+        if source == 'pearvideo':
             pear_video_handler()
-        elif source == 'chinanews':
+        if source == 'chinanews':
             china_news_handler()
         if source == 'itouchtv':
             itouchtv_video_handler()
@@ -253,6 +257,11 @@ else:
     print('缺少 web driver')
     exit(1)
 
-main()
-driver.close()
-driver.quit()
+try:
+    main()
+    driver.close()
+    driver.quit()
+except Exception as e:
+    print(e)
+    driver.close()
+    driver.quit()
