@@ -138,5 +138,8 @@ if __name__ == '__main__':
         driver = webdriver.Edge(executable_path='MicrosoftWebDriver.exe')
     elif os.path.exists('chromedriver.exe'):
         driver = webdriver.Chrome(executable_path='chromedriver.exe')
+    else:
+        print('缺少 web driver')
+        exit(1)
     popnews_ftp_comparor()
     driver.quit()

@@ -6,6 +6,7 @@ import pickle
 import requests
 import argparse
 from ftplib import FTP
+from time import sleep
 from random import choice
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -24,6 +25,7 @@ videos_source = {}
 videos_source['popnews'] = []
 videos_source['pearvideo'] = []
 videos_source['chinanews'] = []
+videos_source['itouchtv'] = []
 videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=new', '最新'])   # Pop News 最新
 videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=a', '港聞'])     # Pop News 港闻
 videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=f', '娛樂'])     # Pop News 娱乐
@@ -38,6 +40,11 @@ videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=ppl'
 videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=h', '地產'])     # Pop News 地產
 videos_source['pearvideo'].append('https://www.pearvideo.com/category_2')          # 梨视频 世界
 videos_source['chinanews'].append('https://www.chinanews.com/shipin/')             # 中新网
+# videos_source['itouchtv'].append(['https://www.itouchtv.cn/', '推荐'])                        # 触电新闻 推荐
+# videos_source['itouchtv'].append(['https://www.itouchtv.cn/news/funny', '搞笑'])              # 触电新闻 搞笑
+# videos_source['itouchtv'].append(['https://www.itouchtv.cn/news/food', '美食'])              # 触电新闻 美食
+# videos_source['itouchtv'].append(['https://www.itouchtv.cn/news/fashion', '时尚'])              # 触电新闻 时尚
+videos_source['itouchtv'].append(['https://www.itouchtv.cn/news/video', '视频'])              # 触电新闻 视频
 
 ###############    All video sources go here     ###############
 
@@ -81,6 +88,32 @@ def video_downloader(file_path, file_name, download_link):
         f.close()
     print("{} downloaded {}".format(file_name, f.name))
 
+# 捉取触电新闻MP4链接
+def itouchtv_video_handler():
+    for source in videos_source['itouchtv']:
+        driver.maximize_window()
+        # driver.set_page_load_timeout(30)
+        driver.get(source[0])
+        windows_height = driver.execute_script("return document.body.clientHeight")
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        sleep(2)
+        while driver.execute_script("return document.body.clientHeight") > windows_height:
+            driver.execute_script("window.scrollTo(0, document.body.scrollHeight-50);")
+            windows_height = driver.execute_script("return document.body.clientHeight")
+            sleep(2)
+
+        soup = BeautifulSoup(driver.page_source, 'html.parser')
+        videos_div = soup.findAll('div', {"class": "pushList__pushItem___bgsfJ"})
+        for item in videos_div:
+            video_sublink = item.find('a', {"class": "pushList__pushItemBox___2MME6"})['href']
+            video_title = item.find('a', {"class": "pushList__pushItemBox___2MME6"})['title']
+            print(video_sublink, video_title)
+            driver.get('https://www.itouchtv.cn%s' % video_sublink)
+            if re.search('src=\"(http.*?\.mp4)', driver.page_source):
+                video_link = re.search('src=\"(http.*?\.mp4)', driver.page_source).group(1)
+                print(video_title, video_link)
+                video_downloader('itouchtv', video_title, video_link)
+    driver.close()
 
 # 捉取梨视频MP4链接
 def pear_video_handler():
@@ -101,6 +134,7 @@ def pear_video_handler():
 # 捉取POPNEWS MP4链接
 def pop_news_handler():
     video_records = {}
+    driver.set_page_load_timeout(30)
     for source in videos_source['popnews']:
         req = requests.get(source[0], headers=random_headers())
         soup = BeautifulSoup(html_decoder(req), 'html.parser')
@@ -109,8 +143,6 @@ def pop_news_handler():
             video_sub_page = 'http://pop.stheadline.com/' + video.find('a').get('href')
             video_title = video.find('a').get('title')
             # req = requests.get(video_sub_page, headers=random_headers())
-            driver = webdriver.Chrome(executable_path='chromedriver.exe')
-            driver.set_page_load_timeout(30)
             try:
                 driver.get(video_sub_page)
             except:
@@ -118,8 +150,8 @@ def pop_news_handler():
             if re.search('http.*\.mp4', driver.page_source):
                 video_link = re.search('http.*\.mp4', driver.page_source).group(0)
                 print(video_title, video_sub_page, video_link)
-                driver.close()
                 video_records[os.path.basename(video_link)] = [video_title, source[1]]  # 视频链接， 视频标题， 视频分类
+    driver.close()
     return video_records
 
 
@@ -208,5 +240,19 @@ def main():
             pear_video_handler()
         elif source == 'chinanews':
             china_news_handler()
+        if source == 'itouchtv':
+            itouchtv_video_handler()
+
+
+# 下载对应版本Edge 驱动 https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/
+# 放到此目录下
+if os.path.exists('MicrosoftWebDriver.exe'):
+    driver = webdriver.Edge(executable_path='MicrosoftWebDriver.exe')
+elif os.path.exists('chromedriver.exe'):
+    driver = webdriver.Chrome(executable_path='chromedriver.exe')
+else:
+    print('缺少 web driver')
+    exit(1)
 
 main()
+driver.quit()
