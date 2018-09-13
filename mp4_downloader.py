@@ -19,7 +19,7 @@ argv = parser.parse_args()
 
 
 ###############    All video source goes here     ###############
-mp4_save_path = ''  # mp4文件保存路径
+mp4_save_path = '\\\\ds1511.sfsingtao.local\\it\\Jobs\\PopNewsTxt\\'  # mp4文件保存路径
 videos_source = {}
 videos_source['popnews'] = []
 videos_source['pearvideo'] = []
@@ -204,9 +204,9 @@ def main():
     for source in videos_source:
         if source == 'popnews':
             popnews_ftp_comparor()
-        elif source == 'pearvideo':
-            pear_video_handler()
-        elif source == 'chinanews':
-            china_news_handler()
+      #  elif source == 'pearvideo':
+     #       pear_video_handler()
+     #   elif source == 'chinanews':
+     #       china_news_handler()
 
 main()
