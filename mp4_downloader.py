@@ -113,7 +113,7 @@ def itouchtv_video_handler():
                 video_link = re.search('src=\"(http.*?\.mp4)', driver.page_source).group(1)
                 print(video_title, video_link)
                 video_downloader('itouchtv', video_title, video_link)
-    driver.close()
+
 
 # 捉取梨视频MP4链接
 def pear_video_handler():
@@ -151,7 +151,6 @@ def pop_news_handler():
                 video_link = re.search('http.*\.mp4', driver.page_source).group(0)
                 print(video_title, video_sub_page, video_link)
                 video_records[os.path.basename(video_link)] = [video_title, source[1]]  # 视频链接， 视频标题， 视频分类
-    driver.close()
     return video_records
 
 
@@ -255,4 +254,5 @@ else:
     exit(1)
 
 main()
+driver.close()
 driver.quit()
