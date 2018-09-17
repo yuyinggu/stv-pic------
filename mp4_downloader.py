@@ -20,7 +20,7 @@ argv = parser.parse_args()
 
 
 ###############    All video source goes here     ###############
-mp4_save_path = '\\\\ds1511.sfsingtao.local\\it\\Jobs\\PopNewsTxt\\'  # mp4文件保存路径
+mp4_save_path = ''  # mp4文件保存路径
 videos_source = {}
 videos_source['popnews'] = []
 videos_source['pearvideo'] = []
@@ -42,7 +42,7 @@ videos_source['pearvideo'].append('https://www.pearvideo.com/category_2')       
 videos_source['chinanews'].append('https://www.chinanews.com/shipin/')             # 中新网
 # videos_source['itouchtv'].append(['https://www.itouchtv.cn/', '推荐'])                        # 触电新闻 推荐
 # videos_source['itouchtv'].append(['https://www.itouchtv.cn/news/funny', '搞笑'])              # 触电新闻 搞笑
-# videos_source['itouchtv'].append(['https://www.itouchtv.cn/news/food', '美食'])              # 触电新闻 美食
+#videos_source['itouchtv'].append(['https://www.itouchtv.cn/news/food', '美食'])              # 触电新闻 美食
 # videos_source['itouchtv'].append(['https://www.itouchtv.cn/news/fashion', '时尚'])              # 触电新闻 时尚
 videos_source['itouchtv'].append(['https://www.itouchtv.cn/news/video', '视频'])              # 触电新闻 视频
 
@@ -237,18 +237,12 @@ def html_decoder(req):
 
 def main():
     for source in videos_source:
-        if source == 'popnews':
-            popnews_ftp_comparor()
-<<<<<<< HEAD
-      #  elif source == 'pearvideo':
-     #       pear_video_handler()
-     #   elif source == 'chinanews':
-     #       china_news_handler()
-=======
-        if source == 'pearvideo':
-            pear_video_handler()
-        if source == 'chinanews':
-            china_news_handler()
+#        if source == 'popnews':
+#            popnews_ftp_comparor()
+#        if source == 'pearvideo':
+#            pear_video_handler()
+#        if source == 'chinanews':
+#            china_news_handler()
         if source == 'itouchtv':
             itouchtv_video_handler()
 
@@ -262,7 +256,6 @@ elif os.path.exists('chromedriver.exe'):
 else:
     print('缺少 web driver')
     exit(1)
->>>>>>> 47cc0c5d8d560988fa4220480e2585a4085f6c99
 
 try:
     main()
