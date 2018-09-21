@@ -42,7 +42,7 @@ videos_source['pearvideo'].append('https://www.pearvideo.com/category_2')       
 videos_source['chinanews'].append('https://www.chinanews.com/shipin/')             # 中新网
 # videos_source['itouchtv'].append(['https://www.itouchtv.cn/', '推荐'])                        # 触电新闻 推荐
 # videos_source['itouchtv'].append(['https://www.itouchtv.cn/news/funny', '搞笑'])              # 触电新闻 搞笑
-# videos_source['itouchtv'].append(['https://www.itouchtv.cn/news/food', '美食'])              # 触电新闻 美食
+#videos_source['itouchtv'].append(['https://www.itouchtv.cn/news/food', '美食'])              # 触电新闻 美食
 # videos_source['itouchtv'].append(['https://www.itouchtv.cn/news/fashion', '时尚'])              # 触电新闻 时尚
 videos_source['itouchtv'].append(['https://www.itouchtv.cn/news/video', '视频'])              # 触电新闻 视频
 
@@ -237,12 +237,12 @@ def html_decoder(req):
 
 def main():
     for source in videos_source:
-        if source == 'popnews':
-            popnews_ftp_comparor()
-        if source == 'pearvideo':
-            pear_video_handler()
-        if source == 'chinanews':
-            china_news_handler()
+#        if source == 'popnews':
+#            popnews_ftp_comparor()
+#        if source == 'pearvideo':
+#            pear_video_handler()
+#        if source == 'chinanews':
+#            china_news_handler()
         if source == 'itouchtv':
             itouchtv_video_handler()
 
