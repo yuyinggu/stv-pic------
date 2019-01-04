@@ -103,25 +103,29 @@ def popnews_ftp_comparor():
 
 def pop_news_handler():
     video_records = {}
-    # driver.implicitly_wait(10)
+    driver.implicitly_wait(25)
     # driver.set_page_load_timeout(30)
     driver.maximize_window()
     for source in videos_source['popnews']:
         req = requests.get(source[0], headers=random_headers())
         soup = BeautifulSoup(html_decoder(req), 'html.parser')
-        videos_list = soup.find('div', id='catPlayListB').find_all('div', class_='trailer')
-        for video in videos_list:
-            video_sub_page = 'http://pop.stheadline.com/' + video.find('a').get('href')
-            video_title = video.find('a').get('title')
-            # req = requests.get(video_sub_page, headers=random_headers())
-            try:
-                driver.get(video_sub_page)
-            except:
-                continue
-            if re.search('http.*\.mp4', driver.page_source):
-                video_link = re.search('http.*\.mp4', driver.page_source).group(0)
-                print(video_title, video_sub_page, video_link)
-                video_records[os.path.basename(video_link)] = [video_title, source[1]]  # 视频链接， 视频标题， 视频分类
+        # 类别页面出错handler 跳过
+        try:
+            videos_list = soup.find('div', id='catPlayListB').find_all('div', class_='trailer')
+            for video in videos_list:
+                video_sub_page = 'http://pop.stheadline.com/' + video.find('a').get('href')
+                video_title = video.find('a').get('title')
+                # req = requests.get(video_sub_page, headers=random_headers())
+                try:
+                    driver.get(video_sub_page)
+                except:
+                    continue
+                if re.search('http.*\.mp4', driver.page_source):
+                    video_link = re.search('http.*\.mp4', driver.page_source).group(0)
+                    print(video_title, video_sub_page, video_link)
+                    video_records[os.path.basename(video_link)] = [video_title, source[1]]  # 视频链接， 视频标题， 视频分类
+        except:
+            pass
     driver.close()
     return video_records
 
