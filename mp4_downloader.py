@@ -135,39 +135,60 @@ def pear_video_handler():
                 video_downloader('pearvideo', video_title, video_link)
 
 
-# 捉取POPNEWS MP4链接
-def pop_news_handler():
+
+def pop_news_handler(selen_webdriver):
+    """
+    捉取POPNEWS MP4链接
+    :param selen_webdriver: selenium webdrver
+    :return: list [视频链接， 视频标题， 视频分类]
+    """
     video_records = {}
-    driver.set_page_load_timeout(30)
+    selen_webdriver.implicitly_wait(20)
+    # driver.set_page_load_timeout(30)
+    selen_webdriver.maximize_window()
     for source in videos_source['popnews']:
         req = requests.get(source[0], headers=random_headers())
         soup = BeautifulSoup(html_decoder(req), 'html.parser')
-        videos_list = soup.find('div', id='catPlayListB').find_all('div', class_='trailer')
-        for video in videos_list:
-            video_sub_page = 'http://pop.stheadline.com/' + video.find('a').get('href')
-            video_title = video.find('a').get('title')
-            # req = requests.get(video_sub_page, headers=random_headers())
-            try:
-                driver.get(video_sub_page)
-            except:
-                continue
-            if re.search('http.*\.mp4', driver.page_source):
-                video_link = re.search('http.*\.mp4', driver.page_source).group(0)
-                print(video_title, video_sub_page, video_link)
-                video_records[os.path.basename(video_link)] = [video_title, source[1]]  # 视频链接， 视频标题， 视频分类
+        # 类别页面出错handler 跳过
+        try:
+            videos_list = soup.find('div', id='catPlayListB').find_all('div', class_='trailer')
+            for video in videos_list:
+                video_sub_page = 'http://pop.stheadline.com/' + video.find('a').get('href')
+                video_title = video.find('a').get('title')
+                # req = requests.get(video_sub_page, headers=random_headers())
+                try:
+                    selen_webdriver.get(video_sub_page)
+                except:
+                    continue
+                if re.search('http.*\.mp4', selen_webdriver.page_source):
+                    video_link = re.search('http.*\.mp4', selen_webdriver.page_source).group(0)
+                    print(video_title, video_sub_page, video_link)
+                    video_records[os.path.basename(video_link)] = [video_title, source[1]]  # 视频链接， 视频标题， 视频分类
+        except:
+            pass
+    selen_webdriver.close()
     return video_records
 
 
-def popnews_ftp_comparor():
+def popnews_ftp_comparor(selen_webdriver, debug_mode=False):
+    """
+    :param selen_webdriver: selenium webdrver
+    :param debug_mode:
+    :type debug_mode: boolean default False
+        True: load video_records from pickle file
+        False: run pop_news_handler() to get video_records
+    """
     ftp_url = '203.80.0.177'
     user = argv.user
     passwd = argv.password
     today_date = (datetime.now() - timedelta(days=0)).strftime("%Y%m%d")  # 20180904
-    video_records = pop_news_handler()
 
-    #with open('test_records.pkl', 'rb') as f:
-    #    video_records = pickle.load(f)
-    #    f.close()
+    if debug_mode:
+        with open('test_records.pkl', 'rb') as f:
+           video_records = pickle.load(f)
+           f.close()
+    else:
+        video_records = pop_news_handler(selen_webdriver=selen_webdriver)
     # 保存 video_records 测试用途
     with open('test_records.pkl', 'wb') as f:
         pickle.dump(video_records, f)
@@ -181,6 +202,7 @@ def popnews_ftp_comparor():
     if os.path.exists(csv_name):
         os.remove(csv_name)
 
+    videos_dict = {}
     for fg in file_gen:
         mp4_name = fg[0]
         if mp4_name in video_records:
@@ -202,10 +224,18 @@ def popnews_ftp_comparor():
             video_title = ''
             video_cat = ''
 
-        with open(csv_name, 'a', encoding='utf-8') as f:
-            f.write('{0},{1},{2}\n'.format(mp4_name, video_title.replace(',', ' '), video_cat))
-            print("找到视频：{0} 标题：{1} 分类：{2}".format(mp4_name, video_title, video_cat))
-            f.close()
+        print("找到视频：{0} 标题：{1} 分类：{2}".format(mp4_name, video_title, video_cat))
+        if not videos_dict.get(video_cat, None): videos_dict[video_cat] = {}
+        videos_dict[video_cat][mp4_name] = {"video_title": video_title}
+    with open(csv_name, 'w', encoding='utf-8') as f:
+        write_str = ""
+        for cat, val in videos_dict.items():
+            for video_mp4_name, video_val in val.items():
+                write_str += '{0},{1},{2}\n'.format(video_mp4_name,
+                                                video_val['video_title'].replace(',', ' '),
+                                                cat)
+        f.write(write_str)
+        f.close()
 
 
 # 捉取中新网MP4链接
@@ -237,14 +267,14 @@ def html_decoder(req):
 
 def main():
     for source in videos_source:
-#        if source == 'popnews':
-#            popnews_ftp_comparor()
+       if source == 'popnews':
+           popnews_ftp_comparor(webdriver=driver)
 #        if source == 'pearvideo':
 #            pear_video_handler()
 #        if source == 'chinanews':
 #            china_news_handler()
-        if source == 'itouchtv':
-            itouchtv_video_handler()
+#         if source == 'itouchtv':
+#             itouchtv_video_handler()
 
 
 # 下载对应版本Edge 驱动 https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/

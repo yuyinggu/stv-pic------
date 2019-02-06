@@ -51,16 +51,25 @@ def html_decoder(req):
         return req.text
 
 
-def popnews_ftp_comparor():
+def popnews_ftp_comparor(selen_webdriver, debug_mode=False):
+    """
+    :param selen_webdriver: selenium webdrver
+    :param debug_mode:
+    :type debug_mode: boolean default False
+        True: load video_records from pickle file
+        False: run pop_news_handler() to get video_records
+    """
     ftp_url = '203.80.0.177'
     user = argv.user
     passwd = argv.password
     today_date = (datetime.now() - timedelta(days=0)).strftime("%Y%m%d")  # 20180904
-    video_records = pop_news_handler()
 
-    #with open('test_records.pkl', 'rb') as f:
-    #    video_records = pickle.load(f)
-    #    f.close()
+    if debug_mode:
+        with open('test_records.pkl', 'rb') as f:
+           video_records = pickle.load(f)
+           f.close()
+    else:
+        video_records = pop_news_handler(selen_webdriver=selen_webdriver)
     # 保存 video_records 测试用途
     with open('test_records.pkl', 'wb') as f:
         pickle.dump(video_records, f)
@@ -74,6 +83,7 @@ def popnews_ftp_comparor():
     if os.path.exists(csv_name):
         os.remove(csv_name)
 
+    videos_dict = {}
     for fg in file_gen:
         mp4_name = fg[0]
         if mp4_name in video_records:
@@ -95,17 +105,30 @@ def popnews_ftp_comparor():
             video_title = ''
             video_cat = ''
 
-        with open(csv_name, 'a', encoding='utf-8') as f:
-            f.write('{0},{1},{2}\n'.format(mp4_name, video_title.replace(',', ' '), video_cat))
-            print("找到视频：{0} 标题：{1} 分类：{2}".format(mp4_name, video_title, video_cat))
-            f.close()
+        print("找到视频：{0} 标题：{1} 分类：{2}".format(mp4_name, video_title, video_cat))
+        if not videos_dict.get(video_cat, None): videos_dict[video_cat] = {}
+        videos_dict[video_cat][mp4_name] = {"video_title": video_title}
+    with open(csv_name, 'w', encoding='utf-8') as f:
+        write_str = ""
+        for cat, val in videos_dict.items():
+            for video_mp4_name, video_val in val.items():
+                write_str += '{0},{1},{2}\n'.format(video_mp4_name,
+                                                video_val['video_title'].replace(',', ' '),
+                                                cat)
+        f.write(write_str)
+        f.close()
 
 
-def pop_news_handler():
+def pop_news_handler(selen_webdriver):
+    """
+    捉取POPNEWS MP4链接
+    :param selen_webdriver: selenium webdrver
+    :return: list [视频链接， 视频标题， 视频分类]
+    """
     video_records = {}
-    driver.implicitly_wait(25)
+    selen_webdriver.implicitly_wait(20)
     # driver.set_page_load_timeout(30)
-    driver.maximize_window()
+    selen_webdriver.maximize_window()
     for source in videos_source['popnews']:
         req = requests.get(source[0], headers=random_headers())
         soup = BeautifulSoup(html_decoder(req), 'html.parser')
@@ -117,21 +140,23 @@ def pop_news_handler():
                 video_title = video.find('a').get('title')
                 # req = requests.get(video_sub_page, headers=random_headers())
                 try:
-                    driver.get(video_sub_page)
+                    selen_webdriver.get(video_sub_page)
                 except:
                     continue
-                if re.search('http.*\.mp4', driver.page_source):
-                    video_link = re.search('http.*\.mp4', driver.page_source).group(0)
+                if re.search('http.*\.mp4', selen_webdriver.page_source):
+                    video_link = re.search('http.*\.mp4', selen_webdriver.page_source).group(0)
                     print(video_title, video_sub_page, video_link)
                     video_records[os.path.basename(video_link)] = [video_title, source[1]]  # 视频链接， 视频标题， 视频分类
         except:
             pass
-    driver.close()
+    selen_webdriver.close()
     return video_records
 
 
-# 随机 浏览器 User-Agent
 def random_headers():
+    """
+    随机 浏览器 User-Agent
+    """
     return {'User-Agent': choice(desktop_agents), 'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'}
 
 
@@ -145,5 +170,5 @@ if __name__ == '__main__':
     else:
         print('缺少 web driver')
         exit(1)
-    popnews_ftp_comparor()
+    popnews_ftp_comparor(selen_webdriver=driver, debug_mode=False)
     driver.quit()
