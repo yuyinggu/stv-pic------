@@ -29,6 +29,7 @@ desktop_agents = ['Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML
                  'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0']
 
 mp4_save_path = ''  # mp4文件保存路径
+mp4_save_path = 'D:\\temp\\04\\06'
 videos_source = {}
 videos_source['popnews'] = []
 videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=new', '最新'])   # Pop News 最新
@@ -197,4 +198,4 @@ if __name__ == '__main__':
         exit(1)
     popnews_ftp_comparor(selen_webdriver=driver, debug_mode=False)
     driver.quit()
-	print_log("Program Exit")
+    print_log("Program Exit")
