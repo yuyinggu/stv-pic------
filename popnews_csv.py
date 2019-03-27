@@ -1,8 +1,10 @@
+# -*- coding: utf-8 -*-
 import re
 import os
 import pickle
 import requests
 import argparse
+import logging
 from ftplib import FTP
 from random import choice
 from bs4 import BeautifulSoup
@@ -105,7 +107,7 @@ def popnews_ftp_comparor(selen_webdriver, debug_mode=False):
             video_title = ''
             video_cat = ''
 
-        print("找到视频：{0} 标题：{1} 分类：{2}".format(mp4_name, video_title, video_cat))
+        print_log("找到视频：{0} 标题：{1} 分类：{2}".format(mp4_name, video_title, video_cat))
         if not videos_dict.get(video_cat, None): videos_dict[video_cat] = {}
         videos_dict[video_cat][mp4_name] = {"video_title": video_title}
     with open(csv_name, 'w', encoding='utf-8') as f:
@@ -145,7 +147,7 @@ def pop_news_handler(selen_webdriver):
                     continue
                 if re.search('http.*\.mp4', selen_webdriver.page_source):
                     video_link = re.search('http.*\.mp4', selen_webdriver.page_source).group(0)
-                    print(video_title, video_sub_page, video_link)
+                    print_log((video_title, video_sub_page, video_link))
                     video_records[os.path.basename(video_link)] = [video_title, source[1]]  # 视频链接， 视频标题， 视频分类
         except:
             pass
@@ -160,15 +162,38 @@ def random_headers():
     return {'User-Agent': choice(desktop_agents), 'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'}
 
 
+def print_log(log_content, log_level='info'):
+    print(log_content)
+    if log_level == 'error':
+        LOGGER.error(log_content)
+    elif log_level == 'debug':
+        LOGGER.debug(log_content)
+    elif log_level == 'warn':
+        LOGGER.warn(log_content)
+    else:
+        LOGGER.info(log_content)
+
+
 if __name__ == '__main__':
+    LOGGER = logging.getLogger('popnews_csv')
+    LOGGER.setLevel(logging.INFO)
+    LOGFILE = 'popnews_csv.log'
+    fileHandler = logging.FileHandler(LOGFILE, 'w', 'utf-8')
+    LOGFORMAT = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s : %(message)s')
+    fileHandler.setFormatter(LOGFORMAT)
+    LOGGER.addHandler(fileHandler)
     # 下载对应版本Edge 驱动 https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/
     # 放到此目录下
     if os.path.exists('MicrosoftWebDriver.exe'):
+        print_log("加载Edge驱动")
         driver = webdriver.Edge(executable_path='MicrosoftWebDriver.exe')
+        print_log("驱动版本： {0}".format(driver.capabilities['version']))
     elif os.path.exists('chromedriver.exe'):
+        print_log("加载Chrome驱动")
         driver = webdriver.Chrome(executable_path='chromedriver.exe')
+        print_log("驱动版本： {0}".format(driver.capabilities['version']))
     else:
-        print('缺少 web driver')
+        print_log('缺少 web driver', log_level='error')
         exit(1)
     popnews_ftp_comparor(selen_webdriver=driver, debug_mode=False)
     driver.quit()
