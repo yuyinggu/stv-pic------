@@ -5,6 +5,9 @@ import pickle
 import requests
 import argparse
 import logging
+import schedule
+import traceback
+from time import sleep
 from ftplib import FTP
 from random import choice
 from bs4 import BeautifulSoup
@@ -175,14 +178,7 @@ def print_log(log_content, log_level='info'):
         LOGGER.info(log_content)
 
 
-if __name__ == '__main__':
-    LOGGER = logging.getLogger('popnews_csv')
-    LOGGER.setLevel(logging.INFO)
-    LOGFILE = 'popnews_csv.log'
-    fileHandler = logging.FileHandler(LOGFILE, 'a', 'utf-8')
-    LOGFORMAT = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s : %(message)s')
-    fileHandler.setFormatter(LOGFORMAT)
-    LOGGER.addHandler(fileHandler)
+def main():
     # 下载对应版本Edge 驱动 https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/
     # 放到此目录下
     if os.path.exists('MicrosoftWebDriver.exe'):
@@ -199,3 +195,22 @@ if __name__ == '__main__':
     popnews_ftp_comparor(selen_webdriver=driver, debug_mode=False)
     driver.quit()
     print_log("Program Exit")
+
+
+if __name__ == '__main__':
+    LOGGER = logging.getLogger('popnews_csv')
+    LOGGER.setLevel(logging.INFO)
+    LOGFILE = 'popnews_csv.log'
+    fileHandler = logging.FileHandler(LOGFILE, 'w', 'utf-8')
+    LOGFORMAT = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s : %(message)s')
+    fileHandler.setFormatter(LOGFORMAT)
+    LOGGER.addHandler(fileHandler)
+    schedule.every().day.at("08:30").do(main)
+    print_log("循環運行開始")
+    while True:
+      try:
+        schedule.run_pending()
+        sleep(3)
+      except Exception as err:
+        print_log(traceback.format_exc(), log_level='error')
+    
