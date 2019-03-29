@@ -183,15 +183,24 @@ def main():
             print_log("驱动版本： {0}".format(driver.capabilities['version']))
         elif os.path.exists('chromedriver.exe'):
             print_log("加载Chrome驱动")
+            # options = webdriver.ChromeOptions()
+            # options.add_argument('--headless')
+            # options.add_argument('--start-maximized')
+            # options.binary_location = r'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'
             driver = webdriver.Chrome(executable_path='chromedriver.exe')
             print_log("驱动版本： {0}".format(driver.capabilities['version']))
         else:
             print_log('缺少 web driver', log_level='error')
             exit(1)
     elif platform.system() == 'Linux':
-        if os.path.exists('chromedriver'):
-            print_log("加载Chrome驱动")
-            driver = webdriver.Chrome(executable_path='./chromedriver')
+        driver_path = '/home/wpadmin/Documents/Github/stv-pic------/chromedriver'
+        if os.path.exists(driver_path):
+            print_log("\u52a0\u8f7dChrome\u9a71\u52a8")
+            options = webdriver.ChromeOptions()
+            options.add_argument('headless')
+            options.add_argument('window-size=1280x800')
+            options.binary_location = '/opt/google/chrome/google-chrome'
+            driver = webdriver.Chrome(executable_path=driver_path, chrome_options=options)
             print_log("驱动版本： {0}".format(driver.capabilities['version']))
         else:
             print_log('缺少 web driver', log_level='error')
