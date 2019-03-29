@@ -3,11 +3,9 @@ import re
 import os
 import pickle
 import requests
+import platform
 import argparse
 import logging
-import schedule
-import traceback
-from time import sleep
 from ftplib import FTP
 from random import choice
 from bs4 import BeautifulSoup
@@ -140,21 +138,18 @@ def pop_news_handler(selen_webdriver):
         soup = BeautifulSoup(html_decoder(req), 'html.parser')
         # 类别页面出错handler 跳过
         try:
-            videos_list = soup.find('div', id='catPlayListB').find_all('div', class_='trailer')
+            selen_webdriver.get(source[0])
+            soup = BeautifulSoup(selen_webdriver.page_source, 'html.parser')
+            videos_list = soup.find_all('li', class_='trailer')
             for video in videos_list:
-                video_sub_page = 'http://pop.stheadline.com/' + video.find('a').get('href')
-                video_title = video.find('a').get('title')
-                # req = requests.get(video_sub_page, headers=random_headers())
-                try:
-                    selen_webdriver.get(video_sub_page)
-                except:
-                    continue
-                if re.search('http.*\.mp4', selen_webdriver.page_source):
-                    video_link = re.search('http.*\.mp4', selen_webdriver.page_source).group(0)
-                    print_log((video_title, video_sub_page, video_link))
-                    video_records[os.path.basename(video_link)] = [video_title, source[1]]  # 视频链接， 视频标题， 视频分类
-        except:
-            pass
+                video_info = video.find('a')
+                video_link = video_info.attrs['data-video']
+                video_title = video_info.attrs['title']
+                print_log((video_title, video_link))
+                video_records[os.path.basename(video_link)] = [video_title, source[1]]  # 视频链接， 视频标题， 视频分类
+        except Exception as err:
+            print(err)
+            continue
     selen_webdriver.close()
     return video_records
 
@@ -181,17 +176,26 @@ def print_log(log_content, log_level='info'):
 def main():
     # 下载对应版本Edge 驱动 https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/
     # 放到此目录下
-    if os.path.exists('MicrosoftWebDriver.exe'):
-        print_log("加载Edge驱动")
-        driver = webdriver.Edge(executable_path='MicrosoftWebDriver.exe')
-        print_log("驱动版本： {0}".format(driver.capabilities['version']))
-    elif os.path.exists('chromedriver.exe'):
-        print_log("加载Chrome驱动")
-        driver = webdriver.Chrome(executable_path='chromedriver.exe')
-        print_log("驱动版本： {0}".format(driver.capabilities['version']))
-    else:
-        print_log('缺少 web driver', log_level='error')
-        exit(1)
+    if platform.system() == 'Windows':
+        if os.path.exists('MicrosoftWebDriver.exe'):
+            print_log("加载Edge驱动")
+            driver = webdriver.Edge(executable_path='MicrosoftWebDriver.exe')
+            print_log("驱动版本： {0}".format(driver.capabilities['version']))
+        elif os.path.exists('chromedriver.exe'):
+            print_log("加载Chrome驱动")
+            driver = webdriver.Chrome(executable_path='chromedriver.exe')
+            print_log("驱动版本： {0}".format(driver.capabilities['version']))
+        else:
+            print_log('缺少 web driver', log_level='error')
+            exit(1)
+    elif platform.system() == 'Linux':
+        if os.path.exists('chromedriver'):
+            print_log("加载Chrome驱动")
+            driver = webdriver.Chrome(executable_path='./chromedriver')
+            print_log("驱动版本： {0}".format(driver.capabilities['version']))
+        else:
+            print_log('缺少 web driver', log_level='error')
+            exit(1)
     popnews_ftp_comparor(selen_webdriver=driver, debug_mode=False)
     driver.quit()
     print_log("Program Exit")
@@ -205,12 +209,4 @@ if __name__ == '__main__':
     LOGFORMAT = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s : %(message)s')
     fileHandler.setFormatter(LOGFORMAT)
     LOGGER.addHandler(fileHandler)
-    schedule.every().day.at("08:30").do(main)
-    print_log("循環運行開始")
-    while True:
-      try:
-        schedule.run_pending()
-        sleep(3)
-      except Exception as err:
-        print_log(traceback.format_exc(), log_level='error')
-    
+    main()
