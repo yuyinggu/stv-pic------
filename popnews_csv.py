@@ -1,20 +1,23 @@
 # -*- coding: utf-8 -*-
-import re
 import os
 import pickle
 import requests
 import platform
 import argparse
 import logging
+from time import sleep
+import traceback
+
 from ftplib import FTP
 from random import choice
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from datetime import datetime, timedelta
+import config_loader
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-u', '--user', required=True)
-parser.add_argument('-p', '--password', required=True)
+parser.add_argument('-u', '--user', required=False)
+parser.add_argument('-p', '--password', required=False)
 argv = parser.parse_args()
 
 ## 模拟浏览器 User-Agent
@@ -29,22 +32,22 @@ desktop_agents = ['Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML
                  'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36',
                  'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0']
 
-mp4_save_path = ''  # mp4文件保存路径
 
 videos_source = {}
 videos_source['popnews'] = []
-videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=new', '最新'])   # Pop News 最新
-videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=a', '港聞'])     # Pop News 港闻
-videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=f', '娛樂'])     # Pop News 娱乐
-videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=b', '國際'])     # Pop News 国际
-videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=e', '兩岸'])     # Pop News 两岸
-videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=l', '生活'])     # Pop News 生活
-videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=m', '電影'])     # Pop News 电影
-videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=c', '體育'])     # Pop News 体育
-videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=d', '財經'])     # Pop News 财经
-videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=s', '親子王'])     # Pop News 亲子王
-videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=ppl', '名人導航'])     # Pop News 名人导航
-videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=h', '地產'])     # Pop News 地產
+videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=new', '最新', 2])   # Pop News 最新
+videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=a', '港聞', 3])     # Pop News 港闻
+videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=f', '娛樂', 1])     # Pop News 娱乐
+videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=b', '國際', 1])     # Pop News 国际
+videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=e', '兩岸', 1])     # Pop News 两岸
+videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=l', '生活', 1])     # Pop News 生活
+videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=m', '電影', 1])     # Pop News 电影
+videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=c', '體育', 1])     # Pop News 体育
+videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=d', '財經', 1])     # Pop News 财经
+videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=s', '親子王', 1])     # Pop News 亲子王
+videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=ppl', '名人導航', 1])     # Pop News 名人导航
+videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=h', '地產', 1])     # Pop News 地產
+
 
 
 # html 中文内容解码
@@ -140,6 +143,7 @@ def pop_news_handler(selen_webdriver):
         try:
             selen_webdriver.get(source[0])
             soup = BeautifulSoup(selen_webdriver.page_source, 'html.parser')
+            # 加载 popnews 第一页的MP4 url
             videos_list = soup.find_all('li', class_='trailer')
             for video in videos_list:
                 video_info = video.find('a')
@@ -147,6 +151,20 @@ def pop_news_handler(selen_webdriver):
                 video_title = video_info.attrs['title']
                 print_log((video_title, video_link))
                 video_records[os.path.basename(video_link)] = [video_title, source[1]]  # 视频链接， 视频标题， 视频分类
+            # 加载 其他页的MP4 url
+            try:
+                if source[2] > 1:
+                    for page_num in range(2, source[2]+1):
+                        selen_webdriver.find_element_by_id("nextPage").click()
+                        sleep(1)
+                        news_videos_list = selen_webdriver.find_elements_by_class_name("module-wrap")
+                        for video_session in news_videos_list:
+                            video_title = video_session.text
+                            video_link = video_session.find_element_by_css_selector("a").get_attribute('data-video')
+                            print_log((video_title, video_link))
+                            video_records[os.path.basename(video_link)] = [video_title, source[1]]
+            except Exception as e:
+                print_log(traceback.format_exc(), log_level='error')
         except Exception as err:
             print(err)
             continue
@@ -175,25 +193,25 @@ def print_log(log_content, log_level='info'):
 
 def main():
     # 下载对应版本Edge 驱动 https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/
+    # 下载对应版本Chrome 驱动 https://chromedriver.chromium.org/
     # 放到此目录下
     if platform.system() == 'Windows':
-        if os.path.exists('MicrosoftWebDriver.exe'):
+        if driver_path.endswith("MicrosoftWebDriver.exe") and os.path.exists(driver_path):
             print_log("加载Edge驱动")
-            driver = webdriver.Edge(executable_path='MicrosoftWebDriver.exe')
+            driver = webdriver.Edge(executable_path=driver_path)
             print_log("驱动版本： {0}".format(driver.capabilities['version']))
-        elif os.path.exists('chromedriver.exe'):
+        elif os.path.exists(driver_path):
             print_log("加载Chrome驱动")
             # options = webdriver.ChromeOptions()
             # options.add_argument('--headless')
             # options.add_argument('--start-maximized')
             # options.binary_location = r'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'
-            driver = webdriver.Chrome(executable_path='chromedriver.exe')
-            print_log("驱动版本： {0}".format(driver.capabilities['version']))
+            driver = webdriver.Chrome(executable_path=driver_path)
+            print_log("驱动版本： {0}".format(driver.capabilities.get('chrome', dict()).get('chromedriverVersion', "UNKNOWN")))
         else:
             print_log('缺少 web driver', log_level='error')
             exit(1)
     elif platform.system() == 'Linux':
-        driver_path = '/home/wpadmin/Documents/Github/stv-pic------/chromedriver'
         if os.path.exists(driver_path):
             print_log("\u52a0\u8f7dChrome\u9a71\u52a8")
             options = webdriver.ChromeOptions()
@@ -201,7 +219,7 @@ def main():
             options.add_argument('window-size=1280x800')
             options.binary_location = '/opt/google/chrome/google-chrome'
             driver = webdriver.Chrome(executable_path=driver_path, chrome_options=options)
-            print_log("驱动版本： {0}".format(driver.capabilities['version']))
+            print_log("驱动版本： {0}".format(driver.capabilities.get('chrome', dict()).get('chromedriverVersion', "UNKNOWN")))
         else:
             print_log('缺少 web driver', log_level='error')
             exit(1)
@@ -218,4 +236,12 @@ if __name__ == '__main__':
     LOGFORMAT = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s : %(message)s')
     fileHandler.setFormatter(LOGFORMAT)
     LOGGER.addHandler(fileHandler)
+    configs = config_loader.ConfLoader()
+    section = "default"
+    mp4_save_path = configs.conf_finder(section, "mp4_save_path", r"")
+    driver_path = configs.conf_finder(section, "web_driver_path")
+    if not argv.user:
+        argv.user = configs.conf_finder(section, "ftp_user")
+    if not argv.password:
+        argv.user = configs.conf_finder(section, "ftp_pass")
     main()
