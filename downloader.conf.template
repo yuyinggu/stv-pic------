@@ -2,7 +2,7 @@
 ftp_user=
 ftp_pass=
 load_popnews_pages=1
-# mp4文件保存路径
+# mp4 file path
 mp4_save_path=
 # Example Linux Chrome driver path: /home/wpadmin/Documents/Github/stv-pic------/chromedriver
 web_driver_path=chromedriver
