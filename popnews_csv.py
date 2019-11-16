@@ -244,5 +244,5 @@ if __name__ == '__main__':
     if not argv.user:
         argv.user = configs.conf_finder(section, "ftp_user")
     if not argv.password:
-        argv.user = configs.conf_finder(section, "ftp_pass")
+        argv.password = configs.conf_finder(section, "ftp_pass")
     main()
