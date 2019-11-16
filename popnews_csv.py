@@ -33,6 +33,7 @@ desktop_agents = ['Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML
                  'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0']
 
 
+# videos_source( "popnews": [<URL>, <Category>, <Pages to load>])
 videos_source = {}
 videos_source['popnews'] = []
 videos_source['popnews'].append(['http://pop.stheadline.com/section.php?cat=new', '最新', 2])   # Pop News 最新
