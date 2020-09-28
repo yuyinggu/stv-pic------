@@ -7,3 +7,5 @@ popnews_csv.log
 downloader.conf
 .idea/inspectionProfiles/profiles_settings.xml
 dist/image/opencc/dictionary/TWVariantsRev.txt.baiduyun.uploading.cfg
+vcruntime140.dll
+popnews*.csv
