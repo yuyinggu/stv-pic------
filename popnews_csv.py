@@ -85,10 +85,13 @@ def popnews_ftp_comparor(selen_webdriver, debug_mode=False):
 
     ftp = FTP(ftp_url)
     ftp.login(user, passwd)
-    file_gen = ftp.mlsd('headline/%s' % today_date)
-    ftp.dir('headline/%s' % today_date)
+    ftp_mp4_dir = 'headline/%s' % today_date
+    print_log("遍历FTP服务器: {}".format(ftp_mp4_dir))
+    file_gen = ftp.mlsd(ftp_mp4_dir)
+    ftp.dir(ftp_mp4_dir)
     csv_name = os.path.join(mp4_save_path, 'popnews%s.csv' % today_date)
     if os.path.exists(csv_name):
+        print_log("{} 已存在，删除中".format(csv_name))
         os.remove(csv_name)
 
     videos_dict = {}
@@ -114,9 +117,14 @@ def popnews_ftp_comparor(selen_webdriver, debug_mode=False):
             video_cat = ''
 
         print_log("找到视频：{0} 标题：{1} 分类：{2}".format(mp4_name, video_title, video_cat))
-        if not videos_dict.get(video_cat, None): videos_dict[video_cat] = {}
+
+        # 保存对应MP4文件名的视频到dict里面
+        if not videos_dict.get(video_cat, None):
+            videos_dict[video_cat] = {}
         videos_dict[video_cat][mp4_name] = {"video_title": video_title}
+
     with open(csv_name, 'w', encoding='utf-8') as f:
+        print_log("{} 保存中".format(csv_name))
         write_str = ""
         for cat, val in videos_dict.items():
             for video_mp4_name, video_val in val.items():
@@ -125,6 +133,7 @@ def popnews_ftp_comparor(selen_webdriver, debug_mode=False):
                                                 cat)
         f.write(write_str)
         f.close()
+        print_log("{} 已保存".format(csv_name))
 
 
 def pop_news_handler(selen_webdriver):
