@@ -1,1 +1,9 @@
-
+.git
+*.pkl
+popnews_csv.log
+.idea
+*.pyc
+*.log
+downloader.conf
+.idea/inspectionProfiles/profiles_settings.xml
+dist/image/opencc/dictionary/TWVariantsRev.txt.baiduyun.uploading.cfg
