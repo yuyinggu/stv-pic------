@@ -138,10 +138,9 @@ def pop_news_handler(selen_webdriver):
     # driver.set_page_load_timeout(30)
     selen_webdriver.maximize_window()
     for source in videos_source['popnews']:
-        req = requests.get(source[0], headers=random_headers())
-        soup = BeautifulSoup(html_decoder(req), 'html.parser')
         # 类别页面出错handler 跳过
         try:
+            print_log("打开 Popnews '{}' 分类网页".format(source[1]))
             selen_webdriver.get(source[0])
             soup = BeautifulSoup(selen_webdriver.page_source, 'html.parser')
             # 加载 popnews 第一页的MP4 url
@@ -167,7 +166,7 @@ def pop_news_handler(selen_webdriver):
             except Exception as e:
                 print_log(traceback.format_exc(), log_level='error')
         except Exception as err:
-            print(err)
+            print_log(err)
             continue
     selen_webdriver.close()
     return video_records
@@ -196,6 +195,7 @@ def main():
     # 下载对应版本Edge 驱动 https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/
     # 下载对应版本Chrome 驱动 https://chromedriver.chromium.org/
     # 放到此目录下
+    headless = configs.conf_finder(section, 'headless', val_type=bool)
     if platform.system() == 'Windows':
         if driver_path.endswith("MicrosoftWebDriver.exe") and os.path.exists(driver_path):
             print_log("加载Edge驱动")
@@ -216,7 +216,8 @@ def main():
         if os.path.exists(driver_path):
             print_log("\u52a0\u8f7dChrome\u9a71\u52a8")
             options = webdriver.ChromeOptions()
-            options.add_argument('headless')
+            if headless:
+                options.add_argument('headless')
             options.add_argument('window-size=1280x800')
             options.binary_location = '/opt/google/chrome/google-chrome'
             driver = webdriver.Chrome(executable_path=driver_path, chrome_options=options)
@@ -224,6 +225,21 @@ def main():
         else:
             print_log('缺少 web driver', log_level='error')
             exit(1)
+    elif platform.system() == 'Darwin':
+        if os.path.exists(driver_path):
+            print_log("\u52a0\u8f7dChrome\u9a71\u52a8")
+            options = webdriver.ChromeOptions()
+            if headless:
+                options.add_argument('headless')
+            options.add_argument('window-size=1280x800')
+            driver = webdriver.Chrome(executable_path=driver_path, chrome_options=options)
+            print_log("驱动版本： {0}".format(driver.capabilities.get('chrome', dict()).get('chromedriverVersion', "UNKNOWN")))
+        else:
+            print_log('缺少 web driver', log_level='error')
+            exit(1)
+    else:
+        print_log("OS Platform {} does not support".format(platform.system()))
+        exit(1)
     popnews_ftp_comparor(selen_webdriver=driver, debug_mode=False)
     driver.quit()
     print_log("Program Exit")

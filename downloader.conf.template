@@ -6,3 +6,4 @@ load_popnews_pages=1
 mp4_save_path=
 # Example Linux Chrome driver path: /home/wpadmin/Documents/Github/stv-pic------/chromedriver
 web_driver_path=chromedriver
+headless=true

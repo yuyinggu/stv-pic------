@@ -21,8 +21,10 @@ class ConfLoader:
             self.LOGGER.error(F"{conf_file_path} not exists")
         return config
 
-    def conf_finder(self, section, conf_name, default_val=None):
+    def conf_finder(self, section, conf_name, default_val=None, val_type=None):
         try:
+            if val_type == bool:
+                return self.configs[section].getboolean(conf_name)
             return self.configs[section].get(conf_name, default_val)
         except Exception as e:
             self.LOGGER.error(e)
